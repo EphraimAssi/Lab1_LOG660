@@ -1,0 +1,8 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "Script de lecture/lecture/ojdbc11.jar",
+        "Script de lecture/lecture/xmlpull_1_1_3_4c.jar",
+        "Script de lecture/lecture/xpp3-1.1.3.4.C.jar"
+    ]
+}

@@ -1,0 +1,15 @@
+########################################
+Bonjour,
+
+Vous pouvez utilisez Oracle SQl developer installé sur vos postes/ordi/laptop ou téléchargeable gratuitement pour faire des requêtes sur votre belle base de donnée de votre équipe:
+
+Base de donnée : Oracle 12cR2
+Host : log660ora12c.logti.etsmtl.ca
+Port : 1521
+SID : LOG660
+User/Pass : ".........." (par courriel)
+
+Pour travailler de la maison, utilisez le VPN:  https://www.etsmtl.ca/services/sti/catalogue-de-services/reseau/etablir-connexion-vpn
+
+Bon Laboratoires!
+########################################
