@@ -6,6 +6,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -274,7 +275,7 @@ public class LectureBD {
                if (parser.getName().equals("client") && id >= 0)
                {
                   insertionClient(id,nomFamille,prenom,courriel,tel,
-                             anniv,adresse,ville,province,
+                             anniv, rue ,adresse,ville,province,
                              codePostal,carte,noCarte, 
                              expMois,expAnnee,motDePasse,forfait);               
                                     
@@ -283,6 +284,7 @@ public class LectureBD {
                   courriel = null;               
                   tel = null;
                   anniv = null;
+                  rue = null;
                   adresse = null;
                   ville = null;
                   province = null;
@@ -345,40 +347,43 @@ public class LectureBD {
       }
    }   
    
-   private void insertionPersonne(int id, String nom, String anniv, String lieu, String photo, String bio) {      
+   private void insertionPersonne(int idPersonne, String dateNaissance, String photo, String nomComplet, String bio, String nom, String prenom, String courriel) {      
       // On insere la personne dans la BD
-      Connection conn = null;
-        PreparedStatement pstmt = null;
-      String sql = "INSERT INTO personne (id, nom, anniv, lieu, photo, bio) VALUES (?, ?, ?, ?, ?, ?)";
-            pstmt = conn.prepareStatement(sql);
+      String sql = "INSERT INTO Personne (idPersonne, dateNaissance, photo, nomComplet, bio, nom, prenom, courriel) VALUES (?, to_date(?, 'yyyy-mm-dd'), ?, ?, ?, ?,?,?)";  
+       try {  
+      
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, idPersonne);
+            preparedStatement.setString(2, dateNaissance);
+            preparedStatement.setString(3, photo); 
+            preparedStatement.setString(4, nomComplet);
+            preparedStatement.setString(5, bio);
+            preparedStatement.setString(6, nom);
+            preparedStatement.setString(7, prenom);
+            preparedStatement.setString(8, courriel);
+            int rowsAffected = preparedStatement.executeUpdate();
 
-       try {
-            java.sql.PreparedStatement statement = conn.prepareStatement(sql);
-            pstmt.setInt(1, id);
-            pstmt.setString(2, nom);
-            pstmt.setString(3, anniv); // Make sure this is in the correct date format
-            pstmt.setString(4, lieu);
-            pstmt.setString(5, photo);
-            pstmt.setString(6, bio);
-            pstmt.executeUpdate();
-            System.out.println("Record inserted successfully.");
-
+             if (rowsAffected > 0) {
+               System.out.println("Insert successful");
+            } else {
+               System.out.println("Insert failed");
+            }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        
-         
+        }   
    }
    
 
-   private void insertionForfait(String code, String nom, double prix, int maxlocation, double maxduree) {      
+   private void insertionForfait(String code, String nom, double prix, int maxlocation, double maxduree) {
       String sql = "INSERT INTO FORFAIT (codeforfait, nom, prix, maxlocation, maxduree) VALUES (?, ?, ?, ?, ?)";
       
       try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, code);
             preparedStatement.setString(2, nom);
             preparedStatement.setDouble(3, prix);
-            preparedStatement.setInt(4, maxlocation)
+            preparedStatement.setInt(4, maxlocation);
+            preparedStatement.setDouble(5, maxduree);
+            
             int rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected > 0) {
@@ -387,6 +392,9 @@ public class LectureBD {
                System.out.println("Insert failed");
             }
          }
+      catch (Exception e) {
+         System.out.println("Exception occured while insertionForfait: " + e.toString());
+      }
    }
 
    private void insertionFilm(int id, String titre, int annee,
@@ -446,32 +454,68 @@ public class LectureBD {
             e.printStackTrace();
          }
       }
+
+      for(Role role : roles) {
+         String callProcedureRole = "{call p_ajouter_role_acteur(?, ?, ?, ?)}";
+         try (CallableStatement cs = connection.prepareCall(callProcedureRole)) {
+            cs.setInt(1, role.id);
+            cs.setInt(2, id);
+            cs.setString(3, role.personnage);
+            cs.execute();
+         } catch (SQLException e) {
+            e.printStackTrace();
+         }
+      }
    }
    
    private void insertionClient(int idPersonne, String nomFamille, String prenom, String courriel,
-                                String tel, String anniv,  String numeroCarteCredit, String typeCarteCredit,
-                                String cvv, String expMois, String expAnnee,
-                                String adresse, String ville, String province,
-                               int idAbonnement) {
-                              id,nomFamille,prenom,courriel,tel,
-                             anniv,adresse,ville,province,
-                             codePostal,carte,noCarte, 
-                             expMois,expAnnee,motDePasse,forfait
+                                String tel, String anniv,  String adresse, String ville, String province, String CodePostale,
+                                String TypeCarte, String noCarte,
+                                ,int expMois, int expAnnee,String motsDePasse, String forfait
+                                ) {
+                             
       // On le client dans la BD
-    String
-    try { 
-        connection.createStatement()
-                .execute("INSERTE INTO Client VALUES (idPersonne, numeroCarteCredit, typeCarteCredit, cvv, 
-                expMois, expAnnee, adresse, ville, province,
-                              idAbonnement); ");  
-    } catch (SQLException e) {
-        logger.debug(e);
-    }
+      String sql = "{call p_ajouter_client_avec_id(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+      try (CallableStatement cs = connection.prepareCall(callProcedure)) {
+         cs.setInt(1, idPersonne);
+         cs.setString(2, anniv);
+         cs.setString(3, nomFamille);
+         cs.setString(4, prenom);
+         cs.setString(5, courriel);
+         cs.setString(6, tel);
+         cs.setString(7, motsDePasse);
+         cs.setString(8, noCarte);
+         cs.setString(9, TypeCarte);
+         cs.setString(10, null);
+         cs.setInt(11, expMois);
+         cs.setInt(12, expAnnee);
+         cs.setString(13, forfait);
 
-    id,nomFamille,prenom,courriel,tel,
-                             anniv,adresse,ville,province,
-                             codePostal,carte,noCarte, 
-                             expMois,expAnnee,motDePasse,forfait
+
+
+
+         cs.execute();
+      } catch (SQLException e) {
+         e.printStackTrace();
+      }
+
+
+   
+
+      
+      v_cvv Client.cvv%TYPE,
+      v_expMois Client.expMois%TYPE,
+      v_expAnnee Client.expAnnee%TYPE,
+      v_codeForfait Abonnement.codeForfait%TYPE,
+      v_rue AdresseBase.rue%TYPE,
+      v_ville AdresseBase.ville%TYPE,
+      v_province AdresseBase.province%TYPE,
+      v_pays AdresseBase.pays%TYPE,
+      v_numeroCivique Adresse.numeroCivique%TYPE,
+      v_codePostal Adresse.codePostal%TYPE
+
+
+      
 
       
 
