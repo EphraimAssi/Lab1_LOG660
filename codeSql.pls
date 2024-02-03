@@ -730,3 +730,38 @@ BEGIN
     );
 END;
 /
+
+--Procédure se connecter au système--
+CREATE OR REPLACE PROCEDURE p_connexion_client
+(
+    v_courriel Personne.courriel%TYPE,
+    v_motDePasse Personne.motDePasse%TYPE
+) AS
+    v_idPersonne Personne.idPersonne%TYPE;
+    v_nom Personne.nom%TYPE;
+    v_prenom Personne.prenom%TYPE;
+    v_courrielClient Personne.courriel%TYPE;
+    v_motDePasseClient Personne.motDePasse%TYPE;
+    v_error_code NUMBER := -20001;
+    v_error_message VARCHAR2(4000);
+BEGIN
+    SELECT idPersonne, nom, prenom, courriel, motDePasse
+    INTO v_idPersonne, v_nom, v_prenom, v_courrielClient, v_motDePasseClient
+    FROM Personne
+    WHERE courriel = v_courriel;
+
+    IF v_motDePasseClient != v_motDePasse THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Mot de passe incorrect.');
+    END IF;
+
+    DBMS_OUTPUT.PUT_LINE('Connexion réussie!');
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Courriel non trouvé.');
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erreur: ' || SQLERRM);
+        DBMS_OUTPUT.PUT_LINE(v_error_message);
+        RAISE_APPLICATION_ERROR(v_error_code, v_error_message, TRUE);
+END p_connexion_client;
+/
+
