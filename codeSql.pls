@@ -308,6 +308,22 @@ BEGIN
 END;
 /
 
+--Trigger pour vérifier qu'un film peut être supprimé--
+CREATE OR REPLACE TRIGGER trg_check_supprimer_film
+BEFORE DELETE ON Film
+FOR EACH ROW
+DECLARE
+    location_count NUMBER;
+BEGIN
+    SELECT COUNT(*) INTO location_count
+    FROM Location
+    WHERE codeExemplaire IN (SELECT codeExemplaire FROM ExemplaireFilm WHERE idFilm = :OLD.idFilm) AND (statut = 'louer' OR statut = 'retarder');
+
+    IF location_count > 0 THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Le film ne peut pas être supprimé car il est loué.');
+    END IF;
+END;
+/
 
 
 /*Procédure stockée*/
@@ -707,30 +723,6 @@ EXCEPTION
 END p_ajouter_role_acteur;
 /
 
---Procédure pour ajuster automatiquement le statut d'une location chaque jour--
-CREATE OR REPLACE PROCEDURE p_ajuster_statut_location AS
-BEGIN
-    UPDATE Location
-    SET statut = 'retarder'
-    WHERE statut = 'louer' AND TRUNC(SYSDATE) > dateMax;
-
-    COMMIT;
-END p_ajuster_statut_location;
-/
-
--- Job pour ajuster automatiquement le statut d'une location chaque jour--
-BEGIN
-    DBMS_SCHEDULER.create_job (
-        job_name        => 'AJUSTER_STATUT_JOB',
-        job_type        => 'PLSQL_BLOCK',
-        job_action      => 'BEGIN p_ajuster_statut_location; END;',
-        start_date      => SYSTIMESTAMP,
-        repeat_interval => 'FREQ=DAILY; BYHOUR=0; BYMINUTE=0; BYSECOND=0',
-        enabled         => TRUE
-    );
-END;
-/
-
 --Procédure se connecter au système--
 CREATE OR REPLACE PROCEDURE p_connexion_client
 (
@@ -765,3 +757,26 @@ EXCEPTION
 END p_connexion_client;
 /
 
+--Procédure pour ajuster automatiquement le statut d'une location chaque jour--
+CREATE OR REPLACE PROCEDURE p_ajuster_statut_location AS
+BEGIN
+    UPDATE Location
+    SET statut = 'retarder'
+    WHERE statut = 'louer' AND TRUNC(SYSDATE) > dateMax;
+
+    COMMIT;
+END p_ajuster_statut_location;
+/
+
+-- Job pour ajuster automatiquement le statut d'une location chaque jour--
+BEGIN
+    DBMS_SCHEDULER.create_job (
+        job_name        => 'AJUSTER_STATUT_JOB',
+        job_type        => 'PLSQL_BLOCK',
+        job_action      => 'BEGIN p_ajuster_statut_location; END;',
+        start_date      => SYSTIMESTAMP,
+        repeat_interval => 'FREQ=DAILY; BYHOUR=0; BYMINUTE=0; BYSECOND=0',
+        enabled         => TRUE
+    );
+END;
+/

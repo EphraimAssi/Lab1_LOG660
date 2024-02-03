@@ -462,7 +462,6 @@ public class LectureBD {
       }
       String callProcedure = "{call p_ajouter_client_avec_id(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
       try (PreparedStatement ps = connection.prepareStatement(callProcedure)) {
-         String sql = "{call p_ajouter_client_avec_id(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
          ps.setInt(1, idPersonne);
          ps.setString(2, anniv);
          ps.setString(3, nomFamille);
