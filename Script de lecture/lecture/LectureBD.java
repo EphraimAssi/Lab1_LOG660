@@ -508,15 +508,17 @@ public class LectureBD {
 
    public static void main(String[] args) {
       LectureBD lecture = new LectureBD();
-
+      
       // Forfait création pour abonnement
 
+      long startTime = System.currentTimeMillis();
       lecture.insertionForfait("D", "Débutant", 5.00, 1, 10f);
       lecture.insertionForfait("I", "Intermédiaire", 10.00, 5, 30f);
       lecture.insertionForfait("A", "Avancé", 15.0, 10, Float.POSITIVE_INFINITY);
 
       String pathPersonnes = new File("Donnees\\personnes_latin1.xml").getAbsolutePath();
       lecture.lecturePersonnes(pathPersonnes);
+      
 
       String pathFilms = new File("Donnees\\films_latin1.xml").getAbsolutePath();
       lecture.lectureFilms(pathFilms);
@@ -527,6 +529,9 @@ public class LectureBD {
        */
       String pathClients = new File("Donnees\\clients_latin1.xml").getAbsolutePath();
       lecture.lectureClients(pathClients);
-
+      
+      long endTime = System.currentTimeMillis();
+      long totalTime = endTime - startTime;
+      System.out.println("Total time: " + totalTime + "ms");
    }
 }

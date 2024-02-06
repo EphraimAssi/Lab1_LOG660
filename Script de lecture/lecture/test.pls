@@ -18,3 +18,10 @@ SELECT *
 FROM Personne
 WHERE categoriePersonne = 'PersonneDossier' AND MONTHS_BETWEEN(CURRENT_DATE, dateNaissance) / 12 < 18;
 
+-- Test ExemplaireFilm
+SELECT * FROM ExemplaireFilm;
+SELECT COUNT(DISTINCT f.idFilm) AS num_films_with_exemplaires
+FROM Film f
+JOIN ExemplaireFilm e ON f.idFilm = e.idFilm;
+
+
