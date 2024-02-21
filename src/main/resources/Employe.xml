@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="https://jakarta.ee/xml/ns/persistence/orm"
+                 version="3.0">
+
+    <entity class="entity.Employe">
+        <table name="EMPLOYE" schema="EQUIPE202" catalog=""/>
+        <attributes>
+            <id name="idpersonne">
+                <column name="IDPERSONNE"/>
+            </id>
+            <basic name="matricule">
+                <column name="MATRICULE"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>
