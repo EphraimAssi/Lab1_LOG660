@@ -7,7 +7,7 @@ import java.math.BigInteger;
 public class Film {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @javax.persistence.Column(name = "IDFILM")
+    @Column(name = "IDFILM")
     private BigInteger idfilm;
 
     public BigInteger getIdfilm() {
@@ -101,4 +101,5 @@ public class Film {
     public void setBandesannonces(String bandesannonces) {
         this.bandesannonces = bandesannonces;
     }
+
 }

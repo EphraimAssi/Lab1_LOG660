@@ -1,13 +1,13 @@
 package entity;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
 public class Forfait {
-    @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
-    @javax.persistence.Id
-    @javax.persistence.Column(name = "CODEFORFAIT")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "CODEFORFAIT")
     private String codeforfait;
 
     public String getCodeforfait() {
@@ -18,8 +18,8 @@ public class Forfait {
         this.codeforfait = codeforfait;
     }
 
-    @javax.persistence.Basic
-    @javax.persistence.Column(name = "NOM")
+    @Basic
+    @Column(name = "NOM")
     private String nom;
 
     public String getNom() {
@@ -30,8 +30,8 @@ public class Forfait {
         this.nom = nom;
     }
 
-    @javax.persistence.Basic
-    @javax.persistence.Column(name = "PRIX")
+    @Basic
+    @Column(name = "PRIX")
     private short prix;
 
     public short getPrix() {
@@ -42,8 +42,8 @@ public class Forfait {
         this.prix = prix;
     }
 
-    @javax.persistence.Basic
-    @javax.persistence.Column(name = "MAXLOCATION")
+    @Basic
+    @Column(name = "MAXLOCATION")
     private BigInteger maxlocation;
 
     public BigInteger getMaxlocation() {
@@ -54,8 +54,8 @@ public class Forfait {
         this.maxlocation = maxlocation;
     }
 
-    @javax.persistence.Basic
-    @javax.persistence.Column(name = "MAXDUREE")
+    @Basic
+    @Column(name = "MAXDUREE")
     private Object maxduree;
 
     public Object getMaxduree() {

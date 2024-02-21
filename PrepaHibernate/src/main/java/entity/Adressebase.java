@@ -1,13 +1,13 @@
 package entity;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
 public class Adressebase {
-    @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
-    @javax.persistence.Id
-    @javax.persistence.Column(name = "IDADRESSE")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "IDADRESSE")
     private BigInteger idadresse;
 
     public BigInteger getIdadresse() {
@@ -18,8 +18,8 @@ public class Adressebase {
         this.idadresse = idadresse;
     }
 
-    @javax.persistence.Basic
-    @javax.persistence.Column(name = "RUE")
+    @Basic
+    @Column(name = "RUE")
     private String rue;
 
     public String getRue() {
@@ -30,8 +30,8 @@ public class Adressebase {
         this.rue = rue;
     }
 
-    @javax.persistence.Basic
-    @javax.persistence.Column(name = "VILLE")
+    @Basic
+    @Column(name = "VILLE")
     private String ville;
 
     public String getVille() {
@@ -42,8 +42,8 @@ public class Adressebase {
         this.ville = ville;
     }
 
-    @javax.persistence.Basic
-    @javax.persistence.Column(name = "PROVINCE")
+    @Basic
+    @Column(name = "PROVINCE")
     private String province;
 
     public String getProvince() {
@@ -54,8 +54,8 @@ public class Adressebase {
         this.province = province;
     }
 
-    @javax.persistence.Basic
-    @javax.persistence.Column(name = "PAYS")
+    @Basic
+    @Column(name = "PAYS")
     private String pays;
 
     public String getPays() {

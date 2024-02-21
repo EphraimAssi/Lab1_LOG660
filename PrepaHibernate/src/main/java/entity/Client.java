@@ -1,13 +1,13 @@
 package entity;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
 public class Client {
-    @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
-    @javax.persistence.Id
-    @javax.persistence.Column(name = "IDPERSONNE")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "IDPERSONNE")
     private BigInteger idpersonne;
 
     public BigInteger getIdpersonne() {
@@ -18,8 +18,8 @@ public class Client {
         this.idpersonne = idpersonne;
     }
 
-    @javax.persistence.Basic
-    @javax.persistence.Column(name = "NUMEROCARTECREDIT")
+    @Basic
+    @Column(name = "NUMEROCARTECREDIT")
     private String numerocartecredit;
 
     public String getNumerocartecredit() {
@@ -30,8 +30,8 @@ public class Client {
         this.numerocartecredit = numerocartecredit;
     }
 
-    @javax.persistence.Basic
-    @javax.persistence.Column(name = "TYPECARTECREDIT")
+    @Basic
+    @Column(name = "TYPECARTECREDIT")
     private String typecartecredit;
 
     public String getTypecartecredit() {
@@ -42,8 +42,8 @@ public class Client {
         this.typecartecredit = typecartecredit;
     }
 
-    @javax.persistence.Basic
-    @javax.persistence.Column(name = "CVV")
+    @Basic
+    @Column(name = "CVV")
     private String cvv;
 
     public String getCvv() {
@@ -54,8 +54,8 @@ public class Client {
         this.cvv = cvv;
     }
 
-    @javax.persistence.Basic
-    @javax.persistence.Column(name = "EXPMOIS")
+    @Basic
+    @Column(name = "EXPMOIS")
     private BigInteger expmois;
 
     public BigInteger getExpmois() {
@@ -66,8 +66,8 @@ public class Client {
         this.expmois = expmois;
     }
 
-    @javax.persistence.Basic
-    @javax.persistence.Column(name = "EXPANNEE")
+    @Basic
+    @Column(name = "EXPANNEE")
     private BigInteger expannee;
 
     public BigInteger getExpannee() {
@@ -78,8 +78,8 @@ public class Client {
         this.expannee = expannee;
     }
 
-    @javax.persistence.Basic
-    @javax.persistence.Column(name = "IDABONNEMENT")
+    @Basic
+    @Column(name = "IDABONNEMENT")
     private BigInteger idabonnement;
 
     public BigInteger getIdabonnement() {

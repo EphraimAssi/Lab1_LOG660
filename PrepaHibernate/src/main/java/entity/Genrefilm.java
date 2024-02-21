@@ -1,13 +1,13 @@
 package entity;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
 public class Genrefilm {
-    @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
-    @javax.persistence.Id
-    @javax.persistence.Column(name = "NOMGENRE")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "NOMGENRE")
     private String nomgenre;
 
     public String getNomgenre() {
@@ -18,9 +18,9 @@ public class Genrefilm {
         this.nomgenre = nomgenre;
     }
 
-    @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
-    @javax.persistence.Id
-    @javax.persistence.Column(name = "IDFILM")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "IDFILM")
     private BigInteger idfilm;
 
     public BigInteger getIdfilm() {

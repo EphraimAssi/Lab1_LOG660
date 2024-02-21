@@ -1,13 +1,13 @@
 package entity;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
 public class Abonnement {
-    @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
-    @javax.persistence.Id
-    @javax.persistence.Column(name = "IDABONNEMENT")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "IDABONNEMENT")
     private BigInteger idabonnement;
 
     public BigInteger getIdabonnement() {
@@ -18,8 +18,8 @@ public class Abonnement {
         this.idabonnement = idabonnement;
     }
 
-    @javax.persistence.Basic
-    @javax.persistence.Column(name = "CODEFORFAIT")
+    @Basic
+    @Column(name = "CODEFORFAIT")
     private String codeforfait;
 
     public String getCodeforfait() {

@@ -7,7 +7,7 @@ import java.math.BigInteger;
 public class Exemplairefilm {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @javax.persistence.Column(name = "CODEEXEMPLAIRE")
+    @Column(name = "CODEEXEMPLAIRE")
     private BigInteger codeexemplaire;
 
     public BigInteger getCodeexemplaire() {
@@ -18,15 +18,15 @@ public class Exemplairefilm {
         this.codeexemplaire = codeexemplaire;
     }
 
-    @Basic
-    @Column(name = "IDFILM")
-    private BigInteger idfilm;
+    @ManyToOne
+    @JoinColumn(name = "IDFILM")
+    private Film film;
 
-    public BigInteger getIdfilm() {
-        return idfilm;
+    public Film getFilm() {
+        return film;
     }
 
-    public void setIdfilm(BigInteger idfilm) {
-        this.idfilm = idfilm;
+    public void setFilm(Film film) {
+        this.film = film;
     }
 }
