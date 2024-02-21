@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="https://jakarta.ee/xml/ns/persistence/orm"
+                 version="3.0">
+
+    <entity class="entity.Client">
+        <table name="CLIENT" schema="EQUIPE202" catalog=""/>
+        <attributes>
+            <id name="idpersonne">
+                <column name="IDPERSONNE"/>
+            </id>
+            <basic name="numerocartecredit">
+                <column name="NUMEROCARTECREDIT"/>
+            </basic>
+            <basic name="typecartecredit">
+                <column name="TYPECARTECREDIT"/>
+            </basic>
+            <basic name="cvv">
+                <column name="CVV"/>
+            </basic>
+            <basic name="expmois">
+                <column name="EXPMOIS"/>
+            </basic>
+            <basic name="expannee">
+                <column name="EXPANNEE"/>
+            </basic>
+            <basic name="idabonnement">
+                <column name="IDABONNEMENT"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>
