@@ -2,6 +2,7 @@ package entity;
 
 import javax.persistence.*;
 import java.math.BigInteger;
+import java.util.List;
 
 @Entity
 public class Film {
@@ -102,4 +103,17 @@ public class Film {
         this.bandesannonces = bandesannonces;
     }
 
+    @OneToMany
+    @JoinColumn(name = "IDFILM")
+    private List<Exemplairefilm> exemplairesFilm;
+
+    public List<Exemplairefilm> getExemplairesFilm() {
+        return exemplairesFilm;
+    }
+
+    public void setExemplairesFilm(List<Exemplairefilm> exemplairesFilm) {
+        this.exemplairesFilm = exemplairesFilm;
+    }
 }
+
+
