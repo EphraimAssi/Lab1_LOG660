@@ -4,7 +4,9 @@ import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
-public class Client {
+@Table(name = "Employe")
+@PrimaryKeyJoinColumn(name = "idPersonne")
+public class Client extends Personne{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "IDPERSONNE")

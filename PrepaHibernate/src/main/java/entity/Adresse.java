@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
-public class Adresse {
+public class Adresse extends Adressebase{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "IDADRESSE")

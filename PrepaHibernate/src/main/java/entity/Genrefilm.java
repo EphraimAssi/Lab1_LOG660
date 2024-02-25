@@ -7,27 +7,28 @@ import java.math.BigInteger;
 public class Genrefilm {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "NOMGENRE")
-    private String nomgenre;
+    @ManyToOne
+    @JoinColumn(name = "NOMGENRE")
+    private Genre genre;
 
-    public String getNomgenre() {
-        return nomgenre;
+    public Genre getGenre() {
+        return genre;
     }
 
-    public void setNomgenre(String nomgenre) {
-        this.nomgenre = nomgenre;
+    public void setGenre(Genre genre) {
+        this.genre = genre;
     }
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "IDFILM")
-    private BigInteger idfilm;
-
-    public BigInteger getIdfilm() {
-        return idfilm;
+    @ManyToOne
+    @JoinColumn(name = "IDFILM")
+    private Film film;
+    public Film getFilm() {
+        return film;
     }
 
-    public void setIdfilm(BigInteger idfilm) {
-        this.idfilm = idfilm;
+    public void setFilm(Film film) {
+        this.film = film;
     }
 }

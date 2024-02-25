@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import java.math.BigInteger;
 
 @Entity
-public class Realisateur {
+public class Realisateur extends Personne{
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     @javax.persistence.Id
     @javax.persistence.Column(name = "IDPERSONNE")

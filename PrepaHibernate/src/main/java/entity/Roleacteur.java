@@ -1,8 +1,6 @@
 package entity;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
@@ -10,14 +8,17 @@ public class Roleacteur {
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     @javax.persistence.Id
     @javax.persistence.Column(name = "IDPERSONNE")
-    private BigInteger idpersonne;
 
-    public BigInteger getIdpersonne() {
-        return idpersonne;
+    @ManyToOne
+    @JoinColumn(name = "IDPERSONNE")
+    private Acteur acteur;
+
+    public Acteur getActeur() {
+        return this.acteur;
     }
 
-    public void setIdpersonne(BigInteger idpersonne) {
-        this.idpersonne = idpersonne;
+    public void setActeur(Acteur acteur) {
+        this.acteur = acteur;
     }
 
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)

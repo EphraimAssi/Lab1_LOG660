@@ -1,36 +1,37 @@
 package entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
 public class Realisateurfilm {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
+    @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
+    @javax.persistence.Id
     @javax.persistence.Column(name = "IDPERSONNE")
-    private BigInteger idpersonne;
 
-    public BigInteger getIdpersonne() {
-        return idpersonne;
+    @OneToOne
+    @JoinColumn(name = "IDPERSONNE")
+    private Realisateur realisateur;
+
+    public Realisateur rgetRealisateur() {
+        return realisateur;
     }
 
-    public void setIdpersonne(BigInteger idpersonne) {
-        this.idpersonne = idpersonne;
+    public void setRealisateur(Realisateur realisateur) {
+        this.realisateur = realisateur;
     }
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @javax.persistence.Column(name = "IDFILM")
-    private BigInteger idfilm;
+    @ManyToOne
+    @JoinColumn(name = "IDFILM")
+    private Film film;
 
-    public BigInteger getIdfilm() {
-        return idfilm;
+    public Film getFilm() {
+        return film;
     }
 
-    public void setIdfilm(BigInteger idfilm) {
-        this.idfilm = idfilm;
+    public void setFilm(Film film) {
+        this.film = film;
     }
 }
