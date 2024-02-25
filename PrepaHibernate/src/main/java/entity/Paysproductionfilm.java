@@ -1,9 +1,6 @@
 package entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
@@ -11,26 +8,31 @@ public class Paysproductionfilm {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @javax.persistence.Column(name = "NOMPAYS")
-    private String nompays;
+    @ManyToOne
+    @JoinColumn(name = "NOMPAYS")
 
-    public String getNompays() {
-        return nompays;
+    private Paysproduction paysproduction;
+
+    public Paysproduction PAYS() {
+        return paysproduction;
     }
 
-    public void setNompays(String nompays) {
-        this.nompays = nompays;
+    public void PAYS(Paysproduction pays) {
+        this.paysproduction = paysproduction;
     }
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @javax.persistence.Column(name = "IDFILM")
-    private BigInteger idfilm;
+    @ManyToOne
+    @JoinColumn(name = "IDFILM")
+    private Film film;
 
-    public BigInteger getIdfilm() {
-        return idfilm;
+    public Film getFilm() {
+        return film;
     }
 
-    public void setIdfilm(BigInteger idfilm) {
-        this.idfilm = idfilm;
+    public void setFilm(Film film) {
+        this.film = film;
     }
 }
