@@ -18,16 +18,16 @@ public class Abonnement {
         this.idabonnement = idabonnement;
     }
 
-    @Basic
-    @Column(name = "CODEFORFAIT")
-    private String codeforfait;
+    @ManyToOne
+    @JoinColumn(name = "CODEFORFAIT")
+    private Forfait forfait;
 
-    public String getCodeforfait() {
-        return codeforfait;
+    public Forfait getForfait() {
+        return forfait;
     }
 
-    public void setCodeforfait(String codeforfait) {
-        this.codeforfait = codeforfait;
+    public void setForfait(Forfait forfait) {
+        this.forfait = forfait;
     }
 
 

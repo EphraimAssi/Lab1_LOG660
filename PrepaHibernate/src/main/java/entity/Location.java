@@ -55,27 +55,27 @@ public class Location {
         this.datemax = datemax;
     }
 
-    @Basic
-    @Column(name = "CODEEXEMPLAIRE")
-    private BigInteger codeexemplaire;
+    @ManyToOne
+    @JoinColumn(name = "CODEEXEMPLAIRE")
+    private Exemplairefilm exemplaireFilm;
 
-    public BigInteger getCodeexemplaire() {
-        return codeexemplaire;
+    public Exemplairefilm getExemplairefilm() {
+        return exemplaireFilm;
     }
 
-    public void setCodeexemplaire(BigInteger codeexemplaire) {
-        this.codeexemplaire = codeexemplaire;
+    public void setCodeexemplaire(Exemplairefilm exemplFilm) {
+        this.exemplaireFilm = exemplFilm;
     }
 
-    @Basic
-    @Column(name = "IDABONNEMENT")
-    private BigInteger idabonnement;
+    @ManyToOne
+    @JoinColumn (name = "IDABONNEMENT")
+    private Abonnement abonnement;
 
-    public BigInteger getIdabonnement() {
-        return idabonnement;
+    public Abonnement getAbonnement() {
+        return abonnement;
     }
 
-    public void setIdabonnement(BigInteger idabonnement) {
-        this.idabonnement = idabonnement;
+    public void setAbonnement(Abonnement abonnement) {
+        this.abonnement = abonnement;
     }
 }

@@ -29,11 +29,11 @@ public class Roleacteur {
     private Film film;
 
 
-    public Film getIdfilm() {
+    public Film getFilm() {
         return film;
     }
 
-    public void setIdfilm(BigInteger idfilm) {
+    public void setFilm(Film film) {
         this.film = film;
     }
 

@@ -151,15 +151,15 @@ public class Personne {
         this.categoriepersonne = categoriepersonne;
     }
 
-    @Basic
-    @Column(name = "IDADRESSE")
-    private BigInteger idadresse;
+    @OneToOne
+    @JoinColumn(name = "IDADRESSE")
+    private Adresse adresse;
 
-    public BigInteger getIdadresse() {
-        return idadresse;
+    public Adresse getAdresse() {
+        return adresse;
     }
 
-    public void setIdadresse(BigInteger idadresse) {
-        this.idadresse = idadresse;
+    public void setAdresse(Adresse idadresse) {
+        this.adresse = adresse;
     }
 }

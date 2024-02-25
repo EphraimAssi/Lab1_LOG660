@@ -78,15 +78,15 @@ public class Client {
         this.expannee = expannee;
     }
 
-    @Basic
-    @Column(name = "IDABONNEMENT")
-    private BigInteger idabonnement;
+    @ManyToOne
+    @JoinColumn(name = "IDABONNEMENT")
+    private Abonnement abonnement;
 
-    public BigInteger getIdabonnement() {
-        return idabonnement;
+    public Abonnement getAbonnement() {
+        return abonnement;
     }
 
-    public void setIdabonnement(BigInteger idabonnement) {
-        this.idabonnement = idabonnement;
+    public void setAbonnement(Abonnement abonnement) {
+        this.abonnement = abonnement;
     }
 }
