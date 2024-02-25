@@ -1,6 +1,8 @@
 package entity;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.math.BigInteger;
 
 @Entity
@@ -21,14 +23,18 @@ public class Roleacteur {
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     @javax.persistence.Id
     @javax.persistence.Column(name = "IDFILM")
-    private BigInteger idfilm;
+   // private BigInteger idfilm;
+    @ManyToOne
+    @JoinColumn(name = "IDFILM")
+    private Film film;
 
-    public BigInteger getIdfilm() {
-        return idfilm;
+
+    public Film getIdfilm() {
+        return film;
     }
 
     public void setIdfilm(BigInteger idfilm) {
-        this.idfilm = idfilm;
+        this.film = film;
     }
 
     @javax.persistence.Basic
