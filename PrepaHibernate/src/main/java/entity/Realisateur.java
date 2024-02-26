@@ -1,20 +1,24 @@
 package entity;
 
-import javax.persistence.Entity;
-import java.math.BigInteger;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
-public class Realisateur extends Personne{
-    @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
-    @javax.persistence.Id
-    @javax.persistence.Column(name = "IDPERSONNE")
-    private BigInteger idpersonne;
+@Table(name = "Realisateur")
+@PrimaryKeyJoinColumn(name = "idPersonne")
+public class Realisateur extends PersonneFilm{
+    @JoinTable(
+            name = "RealisateurFilm",
+            joinColumns = @JoinColumn(name = "idPersonne"),
+            inverseJoinColumns = @JoinColumn(name = "idFilm")
+    )
+    private List<Film> films;
 
-    public BigInteger getIdpersonne() {
-        return idpersonne;
+    public List<Film> getFilms() {
+        return films;
     }
 
-    public void setIdpersonne(BigInteger idpersonne) {
-        this.idpersonne = idpersonne;
+    public void setFilms(List<Film> films) {
+        this.films = films;
     }
 }

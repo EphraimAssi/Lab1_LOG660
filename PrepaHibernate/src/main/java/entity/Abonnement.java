@@ -2,6 +2,7 @@ package entity;
 
 import javax.persistence.*;
 import java.math.BigInteger;
+import java.util.List;
 
 @Entity
 public class Abonnement {
@@ -30,6 +31,15 @@ public class Abonnement {
         this.forfait = forfait;
     }
 
+    @OneToMany
+    @JoinColumn(name = "IDLOCATION")
+    private List<Location> locations;
 
+    public List<Location> getLocations() {
+        return locations;
+    }
 
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
+    }
 }

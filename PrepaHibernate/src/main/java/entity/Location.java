@@ -8,7 +8,7 @@ import java.sql.Date;
 public class Location {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @javax.persistence.Column(name = "IDLOCATION")
+    @Column(name = "IDLOCATION")
     private BigInteger idlocation;
 
     public BigInteger getIdlocation() {
@@ -57,14 +57,14 @@ public class Location {
 
     @ManyToOne
     @JoinColumn(name = "CODEEXEMPLAIRE")
-    private Exemplairefilm exemplaireFilm;
+    private Exemplairefilm film;
 
-    public Exemplairefilm getExemplairefilm() {
-        return exemplaireFilm;
+    public Exemplairefilm getFilm() {
+        return film;
     }
 
-    public void setCodeexemplaire(Exemplairefilm exemplFilm) {
-        this.exemplaireFilm = exemplFilm;
+    public void setFilm(Exemplairefilm film) {
+        this.film = film;
     }
 
     @ManyToOne

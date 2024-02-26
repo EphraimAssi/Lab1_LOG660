@@ -114,6 +114,17 @@ public class Film {
     public void setExemplairesFilm(List<Exemplairefilm> exemplairesFilm) {
         this.exemplairesFilm = exemplairesFilm;
     }
+
+    @ManyToMany(mappedBy="Realisateur")
+    private List<Realisateur> realisateurs;
+
+    public List<Realisateur> getRealisateurs() {
+        return realisateurs;
+    }
+
+    public void setRealisateurs(List<Realisateur> realisateurs) {
+        this.realisateurs = realisateurs;
+    }
 }
 
 

@@ -6,7 +6,7 @@ import java.math.BigInteger;
 @Entity
 @Table(name = "Employe")
 @PrimaryKeyJoinColumn(name = "idPersonne")
-public class Employe extends Personne{
+public class Employe extends PersonneDossier {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "IDPERSONNE")
