@@ -1,5 +1,6 @@
 import javax.persistence.*;
 import entity.*;
+import entity.utilisateur.model.Personne;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -32,10 +33,11 @@ public class Main {
 
     public static void connectionUtilisateur(SessionFactory sessionFactory) {
         AuthentificationService authentificationService = new AuthentificationService(sessionFactory);
-        String email = "AaronAColquitt98@hotmail.com";
-        String password = "lim3Le7Jis";
-        if (authentificationService.verificationUtilisateur(email, password))  {
-            System.out.println("Utilisateur trouvé");
+        String email = "RobertIHamon15@hotmail.com";
+        String password = "AB9Ahj1Quoh";
+        Personne utilisateur = authentificationService.connectionUtilisateur(email, password);
+        if (utilisateur != null) {
+            System.out.println("Utilisateur trouvé : " + utilisateur.getNom() + " " + utilisateur.getPrenom());
         } else {
             System.out.println("Utilisateur non trouvé");
         }
@@ -51,8 +53,8 @@ public class Main {
 //        test1.verrificationTests();
 
 
-       // connectionUtilisateur(sessionFactory);
+        connectionUtilisateur(sessionFactory);
         //showFirst10ExemplaireFilms(sessionFactory);
-        showFirst10Films(sessionFactory);
+        //showFirst10Films(sessionFactory);
     }
 }

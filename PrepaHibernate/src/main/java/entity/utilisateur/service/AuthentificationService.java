@@ -14,7 +14,7 @@ public class AuthentificationService {
     public void openSession() {
         session = sessionFactory.openSession();
     }
-    public boolean verificationUtilisateur(String courriel, String password) {
+    public Personne connectionUtilisateur(String courriel, String password) {
         openSession();
         System.out.println("Courriel : " + courriel + " Mot de passe : " + password);
         try {
@@ -29,8 +29,7 @@ public class AuthentificationService {
             System.out.println("Utilisateur mot de passe :" +  utilisateur.getMotdepasse());
 
             if (utilisateur != null && utilisateur.getMotdepasse().equals(password)) {
-                System.out.println("Utilisateur trouvé");
-                return true; // User found and password matches
+                return utilisateur; // User found and password matches
             }
         } catch (Exception e) {
             if (session != null) session.getTransaction().rollback();
@@ -38,7 +37,7 @@ public class AuthentificationService {
         } finally {
             if (session != null) session.close();
         }
-        return false; // Utilisateur n'a pas été trouvé ou le mot de passe ne correspond pas.
+        return null; // Utilisateur n'a pas été trouvé ou le mot de passe ne correspond pas.
     }
 
 }
