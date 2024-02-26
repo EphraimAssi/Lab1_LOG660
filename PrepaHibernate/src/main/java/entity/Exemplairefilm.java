@@ -21,7 +21,6 @@ public class Exemplairefilm {
     @ManyToOne
     @JoinColumn(name = "IDFILM")
     private Film film;
-
     public Film getFilm() {
         return film;
     }

@@ -22,7 +22,6 @@ public class Abonnement {
     @ManyToOne
     @JoinColumn(name = "CODEFORFAIT")
     private Forfait forfait;
-
     public Forfait getForfait() {
         return forfait;
     }

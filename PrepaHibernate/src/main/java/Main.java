@@ -1,9 +1,12 @@
 import javax.persistence.*;
 import entity.*;
+import entity.utilisateur.model.Personne;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
+import entity.utilisateur.service.AuthentificationService;
+import entity.test.test;
 
 public class Main {
     public static void showFirst10ExemplaireFilms(SessionFactory sessionFactory) {
@@ -27,11 +30,31 @@ public class Main {
         session.getTransaction().commit();
         session.close();
     }
+
+    public static void connectionUtilisateur(SessionFactory sessionFactory) {
+        AuthentificationService authentificationService = new AuthentificationService(sessionFactory);
+        String email = "RobertIHamon15@hotmail.com";
+        String password = "AB9Ahj1Quoh";
+        Personne utilisateur = authentificationService.connectionUtilisateur(email, password);
+        if (utilisateur != null) {
+            System.out.println("Utilisateur trouvé : " + utilisateur.getNom() + " " + utilisateur.getPrenom());
+        } else {
+            System.out.println("Utilisateur non trouvé");
+        }
+
+
+    }
+
     public static void main(String[] args) throws Exception {
         HibernateConfig hibernateConfig = new HibernateConfig();
         SessionFactory sessionFactory = hibernateConfig.getSessionFactory();
 
+//        test test1 = new test(sessionFactory);
+//        test1.verrificationTests();
+
+
+        connectionUtilisateur(sessionFactory);
         //showFirst10ExemplaireFilms(sessionFactory);
-        showFirst10Films(sessionFactory);
+        //showFirst10Films(sessionFactory);
     }
 }

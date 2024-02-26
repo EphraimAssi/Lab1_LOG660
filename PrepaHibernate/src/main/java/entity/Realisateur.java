@@ -21,4 +21,19 @@ public class Realisateur extends PersonneFilm{
     public void setFilms(List<Film> films) {
         this.films = films;
     }
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(
+            name = "REALISATEURFILM",
+            joinColumns = { @JoinColumn(name = "IDPERSONNE") },
+            inverseJoinColumns = { @JoinColumn(name = "IDFILM") }
+    )
+    private Set<Film> films;
+
+    public Set<Film> getFilms() {
+        return films;
+    }
+    public void setFilms(Set<Film> films) {
+        this.films = films;
+    }
 }
