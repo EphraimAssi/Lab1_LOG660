@@ -1,12 +1,12 @@
 package entity;
-
+import entity.utilisateur.model.Personne;
 import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
 @Table(name = "Employe")
 @PrimaryKeyJoinColumn(name = "idPersonne")
-public class Client extends Personne{
+public class Client extends Personne {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "IDPERSONNE")

@@ -20,8 +20,26 @@
         <property name="show_sql">true</property>
 
         <!-- Names the annotated entity class -->
+
+        <mapping class="entity.RoleActeur.model.Acteur"/>
+        <mapping class="entity.Adresse"/>
+        <mapping class="entity.Adressebase"/>
+        <mapping class="entity.Employe"/>
         <mapping class="entity.Exemplairefilm"/>
         <mapping class="entity.Film"/>
+        <mapping class="entity.Genre"/>
+        <mapping class="entity.Paysproduction"/>
+        <mapping class="entity.utilisateur.model.Personne"/>
+        <mapping class="entity.Realisateur"/>
+        <mapping class="entity.RoleActeur.model.Roleacteur"/>
+        <mapping class="entity.Scenariste"/>
+        <mapping class="entity.Forfait"/>
+        <mapping class="entity.Location"/>
+        <mapping class="entity.Abonnement"/>
+
+
+
+
 
     </session-factory>
 

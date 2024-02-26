@@ -4,6 +4,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
+import entity.utilisateur.service.AuthentificationService;
+import entity.test.test;
 
 public class Main {
     public static void showFirst10ExemplaireFilms(SessionFactory sessionFactory) {
@@ -27,10 +29,29 @@ public class Main {
         session.getTransaction().commit();
         session.close();
     }
+
+    public static void connectionUtilisateur(SessionFactory sessionFactory) {
+        AuthentificationService authentificationService = new AuthentificationService(sessionFactory);
+        String email = "AaronAColquitt98@hotmail.com";
+        String password = "lim3Le7Jis";
+        if (authentificationService.verificationUtilisateur(email, password))  {
+            System.out.println("Utilisateur trouvé");
+        } else {
+            System.out.println("Utilisateur non trouvé");
+        }
+
+
+    }
+
     public static void main(String[] args) throws Exception {
         HibernateConfig hibernateConfig = new HibernateConfig();
         SessionFactory sessionFactory = hibernateConfig.getSessionFactory();
 
+//        test test1 = new test(sessionFactory);
+//        test1.verrificationTests();
+
+
+       // connectionUtilisateur(sessionFactory);
         //showFirst10ExemplaireFilms(sessionFactory);
         showFirst10Films(sessionFactory);
     }

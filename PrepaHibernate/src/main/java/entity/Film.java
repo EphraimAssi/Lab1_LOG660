@@ -2,7 +2,9 @@ package entity;
 
 import javax.persistence.*;
 import java.math.BigInteger;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Film {
@@ -114,6 +116,9 @@ public class Film {
     public void setExemplairesFilm(List<Exemplairefilm> exemplairesFilm) {
         this.exemplairesFilm = exemplairesFilm;
     }
+
+
+
 }
 
 

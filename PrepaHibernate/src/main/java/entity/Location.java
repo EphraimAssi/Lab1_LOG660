@@ -62,7 +62,6 @@ public class Location {
     public Exemplairefilm getExemplairefilm() {
         return exemplaireFilm;
     }
-
     public void setCodeexemplaire(Exemplairefilm exemplFilm) {
         this.exemplaireFilm = exemplFilm;
     }

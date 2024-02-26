@@ -1,6 +1,8 @@
 package entity;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Paysproduction {
@@ -16,4 +18,14 @@ public class Paysproduction {
     public void setNompays(String nompays) {
         this.nompays = nompays;
     }
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(
+            name = "PAYSPRODUCTIONFILM",
+            joinColumns = { @JoinColumn(name = "NOMPAYS") },
+            inverseJoinColumns = { @JoinColumn(name = "IDFILM") }
+    )
+    private Set<Film> film;
+
+
 }
