@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
+@Inheritance(strategy=InheritanceType.JOINED)
 public class Adressebase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

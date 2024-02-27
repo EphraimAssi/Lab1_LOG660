@@ -15,12 +15,13 @@ public class HibernateConfig {
         this.sessionFactory = sessionFactory;
     }
 
-    public HibernateConfig() throws Exception {
+    public HibernateConfig() {
         setUp();
     }
 
-    protected void setUp() throws Exception {
+    protected void setUp() {
         //Config hibernate.cfg.xml
+
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .configure()
                 .build();
@@ -28,11 +29,12 @@ public class HibernateConfig {
             sessionFactory = new MetadataSources( registry ).buildMetadata().buildSessionFactory();
         }
         catch (Exception e) {
-            StandardServiceRegistryBuilder.destroy( registry );
+            e.printStackTrace();
+            StandardServiceRegistryBuilder.destroy(registry);
         }
     }
 
-    public void closeFactory() throws Exception {
+    public void closeFactory()  {
         if ( sessionFactory != null ) {
             sessionFactory.close();
         }

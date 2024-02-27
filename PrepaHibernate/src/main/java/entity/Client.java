@@ -4,83 +4,43 @@ import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
-@Table(name = "Employe")
-@PrimaryKeyJoinColumn(name = "idPersonne")
-public class Client extends Personne{
+public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "IDPERSONNE")
     private BigInteger idpersonne;
 
-    public BigInteger getIdpersonne() {
-        return idpersonne;
+    @OneToOne
+    @JoinColumn(name = "IDPERSONNE")
+    private PersonneDossier personne;
+
+    public PersonneDossier getPersonne() {
+        return personne;
     }
 
-    public void setIdpersonne(BigInteger idpersonne) {
-        this.idpersonne = idpersonne;
+    public void setPersonne(PersonneDossier personne) {
+        this.personne = personne;
     }
 
-    @Basic
-    @Column(name = "NUMEROCARTECREDIT")
-    private String numerocartecredit;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "numero", column = @Column(name = "NUMEROCARTECREDIT")),
+            @AttributeOverride(name = "type", column = @Column(name = "TYPECARTECREDIT")),
+            @AttributeOverride(name = "cvv", column = @Column(name = "cvv")),
+            @AttributeOverride(name = "expmois", column = @Column(name = "expmois")),
+            @AttributeOverride(name = "expannee", column = @Column(name = "expannee")),
+    })
+    private CarteCredit carteCredit;
 
-    public String getNumerocartecredit() {
-        return numerocartecredit;
+    public CarteCredit getCarteCredit() {
+        return carteCredit;
     }
 
-    public void setNumerocartecredit(String numerocartecredit) {
-        this.numerocartecredit = numerocartecredit;
+    public void setCarteCredit(CarteCredit carteCredit) {
+        this.carteCredit = carteCredit;
     }
 
-    @Basic
-    @Column(name = "TYPECARTECREDIT")
-    private String typecartecredit;
-
-    public String getTypecartecredit() {
-        return typecartecredit;
-    }
-
-    public void setTypecartecredit(String typecartecredit) {
-        this.typecartecredit = typecartecredit;
-    }
-
-    @Basic
-    @Column(name = "CVV")
-    private String cvv;
-
-    public String getCvv() {
-        return cvv;
-    }
-
-    public void setCvv(String cvv) {
-        this.cvv = cvv;
-    }
-
-    @Basic
-    @Column(name = "EXPMOIS")
-    private BigInteger expmois;
-
-    public BigInteger getExpmois() {
-        return expmois;
-    }
-
-    public void setExpmois(BigInteger expmois) {
-        this.expmois = expmois;
-    }
-
-    @Basic
-    @Column(name = "EXPANNEE")
-    private BigInteger expannee;
-
-    public BigInteger getExpannee() {
-        return expannee;
-    }
-
-    public void setExpannee(BigInteger expannee) {
-        this.expannee = expannee;
-    }
-
-    @ManyToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "IDABONNEMENT")
     private Abonnement abonnement;
 

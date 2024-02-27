@@ -2,22 +2,36 @@ package entity;
 
 import javax.persistence.*;
 import java.math.BigInteger;
+import java.util.List;
 
 @Entity
-@Table(name = "Acteur")
-@PrimaryKeyJoinColumn(name = "idPersonne")
-public class Acteur extends Personne{
-
+public class Acteur {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "IDPERSONNE")
     private BigInteger idpersonne;
 
-    public BigInteger getIdpersonne() {
-        return idpersonne;
+    @OneToOne
+    @JoinColumn(name = "IDPERSONNE")
+    private PersonneFilm personne;
+
+    @OneToMany
+    @JoinColumn(name = "IDPERSONNE")
+    private List<Role> role;
+
+    public PersonneFilm getPersonne() {
+        return personne;
     }
 
-    public void setIdpersonne(BigInteger idpersonne) {
-        this.idpersonne = idpersonne;
+    public void setPersonne(PersonneFilm personne) {
+        this.personne = personne;
+    }
+
+    public List<Role> getRole() {
+        return role;
+    }
+
+    public void setRole(List<Role> role) {
+        this.role = role;
     }
 }

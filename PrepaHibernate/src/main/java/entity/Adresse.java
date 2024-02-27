@@ -4,20 +4,8 @@ import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
+@Table(name = "Adresse")
 public class Adresse extends Adressebase{
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "IDADRESSE")
-    private BigInteger idadresse;
-
-    public BigInteger getIdadresse() {
-        return idadresse;
-    }
-
-    public void setIdadresse(BigInteger idadresse) {
-        this.idadresse = idadresse;
-    }
-
     @Basic
     @Column(name = "NUMEROCIVIQUE")
     private String numerocivique;
