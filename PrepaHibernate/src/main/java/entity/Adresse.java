@@ -5,7 +5,6 @@ import java.math.BigInteger;
 
 @Entity
 @Table(name = "Adresse")
-@PrimaryKeyJoinColumn(name = "idadresse")
 public class Adresse extends Adressebase{
     @Basic
     @Column(name = "NUMEROCIVIQUE")

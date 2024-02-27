@@ -10,7 +10,7 @@ import java.sql.Date;
 public class Personne {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @javax.persistence.Column(name = "IDPERSONNE")
+    @Column(name = "IDPERSONNE")
     private BigInteger idpersonne;
 
     public BigInteger getIdpersonne() {

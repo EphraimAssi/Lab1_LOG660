@@ -75,7 +75,7 @@ public class PersonneDossier extends Personne {
         return adresse;
     }
 
-    public void setAdresse(Adresse idadresse) {
+    public void setAdresse(Adresse adresse) {
         this.adresse = adresse;
     }
 }

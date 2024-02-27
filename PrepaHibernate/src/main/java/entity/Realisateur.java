@@ -1,16 +1,33 @@
 package entity;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 import java.util.List;
 
 @Entity
-@Table(name = "Realisateur")
-@PrimaryKeyJoinColumn(name = "idPersonne")
-public class Realisateur extends PersonneFilm{
+public class Realisateur {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "IDPERSONNE")
+    private BigInteger idpersonne;
+
+    @OneToOne
+    @JoinColumn(name = "IDPERSONNE")
+    private PersonneFilm personne;
+
+    public PersonneFilm getPersonne() {
+        return personne;
+    }
+
+    public void setPersonne(PersonneFilm personne) {
+        this.personne = personne;
+    }
+
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
-            name = "RealisateurFilm",
-            joinColumns = @JoinColumn(name = "idPersonne"),
-            inverseJoinColumns = @JoinColumn(name = "idFilm")
+            name = "REALISATEURFILM",
+            joinColumns = { @JoinColumn(name = "IDPERSONNE") },
+            inverseJoinColumns = { @JoinColumn(name = "IDFILM") }
     )
     private List<Film> films;
 

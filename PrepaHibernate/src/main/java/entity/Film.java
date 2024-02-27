@@ -2,6 +2,7 @@ package entity;
 
 import javax.persistence.*;
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -103,6 +104,22 @@ public class Film {
         this.bandesannonces = bandesannonces;
     }
 
+    public List<String> getBandesannoncesList() {
+        if (bandesannonces != null && !bandesannonces.isEmpty()) {
+            return Arrays.asList(bandesannonces.split("###"));
+        } else {
+            return null;
+        }
+    }
+
+    public void setBandesannoncesList(List<String> bandesannoncesList) {
+        if (bandesannoncesList != null) {
+            this.bandesannonces = String.join("###", bandesannoncesList);
+        } else {
+            this.bandesannonces = null;
+        }
+    }
+
     @OneToMany
     @JoinColumn(name = "IDFILM")
     private List<Exemplairefilm> exemplairesFilm;
@@ -115,7 +132,7 @@ public class Film {
         this.exemplairesFilm = exemplairesFilm;
     }
 
-    @ManyToMany(mappedBy="Realisateur")
+    @ManyToMany(mappedBy="films")
     private List<Realisateur> realisateurs;
 
     public List<Realisateur> getRealisateurs() {
@@ -125,6 +142,36 @@ public class Film {
     public void setRealisateurs(List<Realisateur> realisateurs) {
         this.realisateurs = realisateurs;
     }
+
+    @OneToMany
+    @JoinColumn(name = "IDFILM")
+    private List<Role> roles;
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    @ElementCollection
+    @CollectionTable(name = "Paysproductionfilm", joinColumns = @JoinColumn(name = "idfilm"))
+    @Column(name = "nomPays")
+    private List<String> paysProduction;
+
+    @ElementCollection
+    @CollectionTable(name = "ScenaristeFilm", joinColumns = @JoinColumn(name = "idfilm"))
+    @Column(name = "nomScenariste")
+    private List<String> scenaristes;
+
+    @ManyToMany
+    @JoinTable(
+            name = "GENREFILM",
+            joinColumns = { @JoinColumn(name = "IDFILM") },
+            inverseJoinColumns = { @JoinColumn(name = "NOMGENRE") }
+    )
+    private List<Genre> genres;
 }
 
 

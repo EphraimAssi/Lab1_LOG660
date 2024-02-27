@@ -15,9 +15,6 @@ public class Abonnement {
         return idabonnement;
     }
 
-    public void setIdabonnement(BigInteger idabonnement) {
-        this.idabonnement = idabonnement;
-    }
 
     @ManyToOne
     @JoinColumn(name = "CODEFORFAIT")

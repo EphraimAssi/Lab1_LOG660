@@ -4,11 +4,32 @@ import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
-@Table(name = "Employe")
-@PrimaryKeyJoinColumn(name = "idPersonne")
-public class Client extends PersonneDossier {
+public class Client {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "IDPERSONNE")
+    private BigInteger idpersonne;
+
+    @OneToOne
+    @JoinColumn(name = "IDPERSONNE")
+    private PersonneDossier personne;
+
+    public PersonneDossier getPersonne() {
+        return personne;
+    }
+
+    public void setPersonne(PersonneDossier personne) {
+        this.personne = personne;
+    }
 
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "numero", column = @Column(name = "NUMEROCARTECREDIT")),
+            @AttributeOverride(name = "type", column = @Column(name = "TYPECARTECREDIT")),
+            @AttributeOverride(name = "cvv", column = @Column(name = "cvv")),
+            @AttributeOverride(name = "expmois", column = @Column(name = "expmois")),
+            @AttributeOverride(name = "expannee", column = @Column(name = "expannee")),
+    })
     private CarteCredit carteCredit;
 
     public CarteCredit getCarteCredit() {
@@ -19,7 +40,7 @@ public class Client extends PersonneDossier {
         this.carteCredit = carteCredit;
     }
 
-    @ManyToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "IDABONNEMENT")
     private Abonnement abonnement;
 

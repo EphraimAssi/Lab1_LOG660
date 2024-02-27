@@ -4,20 +4,22 @@ import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
-@Table(name = "Employe")
-@PrimaryKeyJoinColumn(name = "idPersonne")
-public class Employe extends PersonneDossier {
+public class Employe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "IDPERSONNE")
     private BigInteger idpersonne;
 
-    public BigInteger getIdpersonne() {
-        return idpersonne;
+    @OneToOne
+    @JoinColumn(name = "IDPERSONNE")
+    private PersonneDossier personne;
+
+    public PersonneDossier getPersonne() {
+        return personne;
     }
 
-    public void setIdpersonne(BigInteger idpersonne) {
-        this.idpersonne = idpersonne;
+    public void setPersonne(PersonneDossier personne) {
+        this.personne = personne;
     }
 
     @Basic

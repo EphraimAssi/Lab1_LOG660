@@ -56,13 +56,13 @@ public class Forfait {
 
     @Basic
     @Column(name = "MAXDUREE")
-    private Object maxduree;
+    private Double maxduree;
 
-    public Object getMaxduree() {
+    public Double getMaxduree() {
         return maxduree;
     }
 
-    public void setMaxduree(Object maxduree) {
+    public void setMaxduree(Double maxduree) {
         this.maxduree = maxduree;
     }
 }

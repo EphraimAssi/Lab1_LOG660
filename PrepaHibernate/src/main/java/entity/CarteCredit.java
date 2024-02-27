@@ -5,8 +5,7 @@ import java.math.BigInteger;
 
 @Embeddable
 public class CarteCredit {
-    @Basic
-    @Column(name = "NUMEROCARTECREDIT")
+
     private String numero;
 
     public String getNumero() {
@@ -17,8 +16,6 @@ public class CarteCredit {
         this.numero = numero;
     }
 
-    @Basic
-    @Column(name = "TYPECARTECREDIT")
     private String type;
 
     public String getType() {
@@ -29,8 +26,6 @@ public class CarteCredit {
         this.type = type;
     }
 
-    @Basic
-    @Column(name = "CVV")
     private String cvv;
 
     public String getCvv() {
@@ -41,8 +36,6 @@ public class CarteCredit {
         this.cvv = cvv;
     }
 
-    @Basic
-    @Column(name = "EXPMOIS")
     private BigInteger expmois;
 
     public BigInteger getExpmois() {
@@ -53,8 +46,6 @@ public class CarteCredit {
         this.expmois = expmois;
     }
 
-    @Basic
-    @Column(name = "EXPANNEE")
     private BigInteger expannee;
 
     public BigInteger getExpannee() {
