@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Film {
@@ -155,15 +156,31 @@ public class Film {
         this.roles = roles;
     }
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "Paysproductionfilm", joinColumns = @JoinColumn(name = "idfilm"))
     @Column(name = "nomPays")
-    private List<String> paysProduction;
+    private Set<String> paysProduction;
 
-    @ElementCollection
+    public Set<String> getPaysProduction() {
+        return paysProduction;
+    }
+
+    public void setPaysProduction(Set<String> paysProduction) {
+        this.paysProduction = paysProduction;
+    }
+
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "ScenaristeFilm", joinColumns = @JoinColumn(name = "idfilm"))
     @Column(name = "nomScenariste")
-    private List<String> scenaristes;
+    private Set<String> scenaristes;
+
+    public Set<String> getScenaristes() {
+        return scenaristes;
+    }
+
+    public void setScenaristes(Set<String> scenaristes) {
+        this.scenaristes = scenaristes;
+    }
 
     @ManyToMany
     @JoinTable(
@@ -172,6 +189,14 @@ public class Film {
             inverseJoinColumns = { @JoinColumn(name = "NOMGENRE") }
     )
     private List<Genre> genres;
+
+    public List<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<Genre> genres) {
+        this.genres = genres;
+    }
 }
 
 

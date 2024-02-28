@@ -11,17 +11,17 @@ public class RoleActeurId implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "IDPERSONNE")
-    private Personne personne;
+    private Acteur personne;
 
     @ManyToOne
     @JoinColumn(name = "IDFILM")
     private Film film;
 
-    public Personne getPersonne() {
+    public Acteur getPersonne() {
         return personne;
     }
 
-    public void setPersonne(Personne personne) {
+    public void setPersonne(Acteur personne) {
         this.personne = personne;
     }
 

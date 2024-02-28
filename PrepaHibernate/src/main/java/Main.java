@@ -1,4 +1,3 @@
-import javax.persistence.*;
 import entity.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -10,8 +9,8 @@ public class Main {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         List<Exemplairefilm> result = session.createQuery("select e from Exemplairefilm e").setMaxResults(10).list();
-        for ( Exemplairefilm exemplaire : result) {
-            System.out.println( "Exemplaire :" + exemplaire.getCodeexemplaire() + " : " + exemplaire.getFilm().getTitre() );
+        for (Exemplairefilm exemplaire : result) {
+            System.out.println("Exemplaire :" + exemplaire.getCodeexemplaire() + " : " + exemplaire.getFilm().getTitre());
         }
         session.getTransaction().commit();
         session.close();
@@ -21,8 +20,8 @@ public class Main {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         List<Film> result = session.createQuery("select e from Film e").setMaxResults(10).list();
-        for ( Film film : result) {
-            System.out.println( "Film :" + film.getExemplairesFilm().stream().count() + " : " + film.getTitre() );
+        for (Film film : result) {
+            System.out.println("Film :" + film.getExemplairesFilm().stream().count() + " : " + film.getTitre());
         }
         session.getTransaction().commit();
         session.close();
@@ -32,8 +31,8 @@ public class Main {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         List<Client> result = session.createQuery("select e from Client e").setMaxResults(10).list();
-        for ( Client client : result) {
-            System.out.println( "Client :" + client.getPersonne().getNom() );
+        for (Client client : result) {
+            System.out.println("Client :" + client.getPersonne().getNom());
         }
         session.getTransaction().commit();
         session.close();
@@ -43,8 +42,8 @@ public class Main {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         List<Acteur> result = session.createQuery("select e from Acteur e").setMaxResults(10).list();
-        for ( Acteur i : result) {
-            System.out.println( "Acteur :" + i.getPersonne().getNomcomplet() );
+        for (Acteur i : result) {
+            System.out.println("Acteur :" + i.getPersonne().getNomcomplet());
         }
         session.getTransaction().commit();
         session.close();
@@ -54,8 +53,8 @@ public class Main {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         List<Realisateur> result = session.createQuery("select e from Realisateur e").setMaxResults(10).list();
-        for ( Realisateur i : result) {
-            System.out.println( "Realisateur :" + i.getPersonne().getNomcomplet() );
+        for (Realisateur i : result) {
+            System.out.println("Realisateur :" + i.getPersonne().getNomcomplet());
         }
         session.getTransaction().commit();
         session.close();
@@ -65,8 +64,8 @@ public class Main {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         List<PersonneFilm> result = session.createQuery("select e from PersonneFilm e").setMaxResults(10).list();
-        for ( PersonneFilm i : result) {
-            System.out.println( "Personne :" + i.getNomcomplet() );
+        for (PersonneFilm i : result) {
+            System.out.println("Personne :" + i.getNomcomplet());
         }
         session.getTransaction().commit();
         session.close();
@@ -86,5 +85,12 @@ public class Main {
         // Test facade connection utilisateur
         DataFacade dataFacade = new DataFacade();
         dataFacade.connectionUtilisateur("RobertIHamon15@hotmail.com", "AB9Ahj1Quoh");
+
+        List<Film> result = dataFacade.consultationFilms("The", "2000", "2022", "UK", "English", "Action", "Brett", "Jackman");
+        if (result != null && !result.isEmpty()) {
+            dataFacade.loadAllFilm(result.get(0));
+            Film film = result.get(0);
+        }
+        System.out.println("Debug");
     }
 }
