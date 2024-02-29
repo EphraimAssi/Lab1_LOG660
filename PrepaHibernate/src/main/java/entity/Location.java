@@ -55,7 +55,7 @@ public class Location {
         this.datemax = datemax;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CODEEXEMPLAIRE")
     private Exemplairefilm film;
 
@@ -67,7 +67,7 @@ public class Location {
         this.film = film;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn (name = "IDABONNEMENT")
     private Abonnement abonnement;
 

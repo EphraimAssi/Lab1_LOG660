@@ -1,8 +1,10 @@
-import javax.persistence.*;
 import entity.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import java.math.BigInteger;
 import java.util.List;
 
 public class Main {
@@ -73,8 +75,9 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        //HibernateConfig hibernateConfig = new HibernateConfig();
-        //SessionFactory sessionFactory = hibernateConfig.getSessionFactory();
+        HibernateConfig hibernateConfig = new HibernateConfig();
+
+        SessionFactory sessionFactory = hibernateConfig.getSessionFactory();
 
         //showFirst10ExemplaireFilms(sessionFactory);
         //showFirst10Films(sessionFactory);
@@ -83,8 +86,11 @@ public class Main {
         //showFirst10Realisateur(sessionFactory);
         //showFirst10PersonneFilm(sessionFactory);
 
+
         // Test facade connection utilisateur
-        DataFacade dataFacade = new DataFacade();
-        dataFacade.connectionUtilisateur("RobertIHamon15@hotmail.com", "AB9Ahj1Quoh");
+       DataFacade dataFacade = new DataFacade();
+       // dataFacade.connectionUtilisateur("RobertIHanmon15@hotmail.com", "AB9Ahj1Quoh");
+       dataFacade.locationFilmPersonneDossier();
+
     }
 }

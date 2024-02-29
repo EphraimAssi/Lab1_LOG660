@@ -28,7 +28,7 @@ public class Abonnement {
         this.forfait = forfait;
     }
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "IDLOCATION")
     private List<Location> locations;
 

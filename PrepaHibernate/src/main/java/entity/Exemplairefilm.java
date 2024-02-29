@@ -18,7 +18,7 @@ public class Exemplairefilm {
         this.codeexemplaire = codeexemplaire;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "IDFILM")
     private Film film;
 
