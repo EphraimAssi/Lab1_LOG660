@@ -17,7 +17,7 @@ public class Acteur {
 
     @OneToMany
     @JoinColumn(name = "IDPERSONNE")
-    private List<Role> role;
+    private List<Role> roles;
 
     public PersonneFilm getPersonne() {
         return personne;
@@ -27,11 +27,11 @@ public class Acteur {
         this.personne = personne;
     }
 
-    public List<Role> getRole() {
-        return role;
+    public List<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(List<Role> role) {
-        this.role = role;
+    public void setRoles(List<Role> role) {
+        this.roles = role;
     }
 }

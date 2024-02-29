@@ -1,36 +1,44 @@
 package entity;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Objects;
 
 @Embeddable
 public class RoleActeurId implements Serializable {
+    @Column(name = "IDPERSONNE")
+    private BigInteger idpersonne;
 
-    @ManyToOne
-    @JoinColumn(name = "IDPERSONNE")
-    private Acteur personne;
+    @Column(name = "IDFILM")
+    private BigInteger idfilm;
 
-    @ManyToOne
-    @JoinColumn(name = "IDFILM")
-    private Film film;
+    public RoleActeurId() {
 
-    public Acteur getPersonne() {
-        return personne;
     }
 
-    public void setPersonne(Acteur personne) {
-        this.personne = personne;
+    public RoleActeurId(BigInteger idpersonne, BigInteger idfilm) {
+        this.idpersonne = idpersonne;
+        this.idfilm = idfilm;
     }
 
-    public Film getFilm() {
-        return film;
+    public BigInteger getIdpersonne() {
+        return idpersonne;
     }
 
-    public void setFilm(Film film) {
-        this.film = film;
+    public void setIdpersonne(BigInteger idpersonne) {
+        this.idpersonne = idpersonne;
+    }
+
+    public BigInteger getIdfilm() {
+        return idfilm;
+    }
+
+    public void setIdfilm(BigInteger idfilm) {
+        this.idfilm = idfilm;
     }
 
     @Override
@@ -38,11 +46,12 @@ public class RoleActeurId implements Serializable {
         if (this == o) return true;
         if (!(o instanceof RoleActeurId)) return false;
         RoleActeurId that = (RoleActeurId) o;
-        return personne.equals(that.personne) &&
-                film.equals(that.film);
+        return Objects.equals(getIdpersonne(), that.getIdpersonne()) &&
+                Objects.equals(getIdfilm(), that.getIdfilm());
     }
 
+    @Override
     public int hashCode() {
-        return Objects.hash(personne, film);
+        return Objects.hash(getIdpersonne(), getIdfilm());
     }
 }

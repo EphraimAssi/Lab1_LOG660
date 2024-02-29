@@ -72,25 +72,50 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        //HibernateConfig hibernateConfig = new HibernateConfig();
-        //SessionFactory sessionFactory = hibernateConfig.getSessionFactory();
-
-        //showFirst10ExemplaireFilms(sessionFactory);
-        //showFirst10Films(sessionFactory);
-        //showFirst10Clients(sessionFactory);
-        //showFirst10Acteur(sessionFactory);
-        //showFirst10Realisateur(sessionFactory);
-        //showFirst10PersonneFilm(sessionFactory);
-
         // Test facade connection utilisateur
         DataFacade dataFacade = new DataFacade();
         dataFacade.connectionUtilisateur("RobertIHamon15@hotmail.com", "AB9Ahj1Quoh");
 
+        /*
         List<Film> result = dataFacade.consultationFilms("The", "2000", "2022", "UK", "English", "Action", "Brett", "Jackman");
-        if (result != null && !result.isEmpty()) {
-            dataFacade.loadAllFilm(result.get(0));
-            Film film = result.get(0);
+        for (Film i : result) {
+            dataFacade.loadAllFilm(i);
+        }*/
+
+        /*
+        // Search doit fonctionner même si les lettre ne sont pas dans le bon ordre
+        List<Film> result2 = dataFacade.consultationFilms("mnex", "2000", "2022", "KU", "hengl", "Action", "Brett", "Jackman");
+        for (Film i : result2) {
+            dataFacade.loadAllFilm(i);
         }
+
+        // Devrait retourner tout les films ayant USA comme pays
+        List<Film> resultPays = dataFacade.consultationFilms(null, null, null, "aus", null, null, null, null);
+
+        // Devrait retourner tout les films ayant Action comme genre
+        List<Film> resultGenre = dataFacade.consultationFilms(null, null, null, null, null, "ticno", null, null);
+        for (Film i : resultGenre) {
+            dataFacade.loadGenres(i);
+        }
+
+        // Devrait retourner tous les films ayant B r e t t faisant partie du nom de réalisateur
+        List<Film> resultRealisateur = dataFacade.consultationFilms(null, null, null, null, null, null, "bttre", null);
+        for (Film i : resultRealisateur) {
+            dataFacade.loadRealisateurs(i);
+        }
+
+        // Devrait retourner tous les films ayant J A C K M A N faisant partie du nom de l'acteur
+        List<Film> resultActeur = dataFacade.consultationFilms(null, null, null, null, null, null, null, "najckam");
+        for (Film i : resultActeur) {
+            dataFacade.loadRoles(i);
+        }*/
+
+        // Exemple avec plusieurs critères
+        List<Film> resultCriteresMultiple = dataFacade.consultationFilms("The", null, null, null, null, "action,adventure", null, null);
+        for (Film i : resultCriteresMultiple) {
+            dataFacade.loadGenres(i);
+        }
+
         System.out.println("Debug");
     }
 }

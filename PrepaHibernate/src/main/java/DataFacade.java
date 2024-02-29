@@ -1,12 +1,22 @@
 import Service.AuthentificationService;
 import entity.*;
+import oracle.net.aso.c;
+
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.*;
-import org.hibernate.type.StringType;
+import org.hibernate.criterion.Conjunction;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DataFacade {
     private final SessionFactory sessionFactory;
@@ -14,6 +24,17 @@ public class DataFacade {
     public DataFacade() {
         HibernateConfig hibernateConfig = new HibernateConfig();
         this.sessionFactory = hibernateConfig.getSessionFactory();
+    }
+
+    public ArrayList<String> splitToList(String input) {
+        if (input == null) {
+            return new ArrayList<>();
+        }
+        return new ArrayList<>(Arrays.asList(input.split(",")));
+    }
+
+    public String getFirstItem(List<String> list) {
+        return (list != null && !list.isEmpty()) ? list.get(0) : null;
     }
 
     public void connectionUtilisateur(String email, String password) {
@@ -27,48 +48,140 @@ public class DataFacade {
     }
 
     public List<Film> consultationFilms(String titre, String anneeMin, String anneeMax, String pays, String langue, String genre, String realisateur, String acteur) {
+        List<Film> films = new ArrayList<>();
+
+        ArrayList<String> titreList = splitToList(titre);
+        ArrayList<String> paysList = splitToList(pays);
+        ArrayList<String> langueList = splitToList(langue);
+        ArrayList<String> genreList = splitToList(genre);
+        ArrayList<String> realisateurList = splitToList(realisateur);
+        ArrayList<String> acteurList = splitToList(acteur);
+
+        films = consultationFilmsRecursive(titreList, anneeMin, anneeMax, paysList, langueList, genreList, realisateurList, acteurList, films);
+
+        return films;
+    }
+
+    public List<Film> consultationFilmsRecursive(List<String> titreList, String anneeMin, String anneeMax, List<String> paysList, List<String> langueList, List<String> genreList, List<String> realisateurList, List<String> acteurList, List<Film> films) {
+        if (titreList.isEmpty() && paysList.isEmpty() && langueList.isEmpty() && genreList.isEmpty() && realisateurList.isEmpty() && acteurList.isEmpty()) {
+            return films;
+        }
+
         try (Session session = sessionFactory.openSession()) {
             Criteria criteria = session.createCriteria(Film.class);
 
-            if (titre != null && !titre.isEmpty()) {
-                criteria.add(Restrictions.ilike("titre", titre, MatchMode.ANYWHERE));
+            if(!films.isEmpty()){
+                List<BigInteger> filmIds = films.stream().map(Film::getIdfilm).collect(Collectors.toList());
+                criteria.add(Restrictions.in("id", filmIds));
             }
 
-            if (anneeMin != null && !anneeMin.isEmpty()) {
+            String titre = getFirstItem(titreList);
+            if (titre != null && !titre.isEmpty()) {
+                Conjunction conjunction = Restrictions.conjunction();
+                for (char c : titre.toCharArray()) {
+                    conjunction.add(Restrictions.ilike("titre", String.valueOf(c), MatchMode.ANYWHERE));
+                }
+                criteria.add(conjunction);
+                titreList.remove(0);
+            }
+
+            if(anneeMin == null && anneeMax == null) {
+                anneeMin = "0";
+                anneeMax = "9999";
+            }
+            
+            try {
+                Integer numericAnneeMin = null;
+                Integer numericAnneeMax = null;
+                
+                if (anneeMin != "0") {
+                    numericAnneeMin = Integer.parseInt(anneeMin);
+                }
+
+                if (anneeMax != "9999") {
+                    numericAnneeMax = Integer.parseInt(anneeMax);
+                }
+
+                if (numericAnneeMin != null && numericAnneeMax != null && numericAnneeMin > numericAnneeMax) {
+                    return films;
+                }
+            } catch (NumberFormatException | NullPointerException e) {
+                return films;
+            }
+
+            if (anneeMin != "0" && !anneeMin.isEmpty() && StringUtils.isNumeric(anneeMin)) {
                 criteria.add(Restrictions.ge("annee", anneeMin));
             }
 
-            if (anneeMax != null && !anneeMax.isEmpty()) {
+            if (anneeMax != "9999" && !anneeMax.isEmpty() && StringUtils.isNumeric(anneeMax)) {
                 criteria.add(Restrictions.le("annee", anneeMax));
             }
 
+            String pays = getFirstItem(paysList);
             if (pays != null && !pays.isEmpty()) {
-                criteria.add(Restrictions.sqlRestriction("upper(nomPays) like upper(?)", "%" + pays + "%", StringType.INSTANCE));
+                StringBuilder pattern = new StringBuilder();
+                for (char c : pays.toCharArray()) {
+                    pattern.append(" AND UPPER(nomPays) LIKE UPPER('%").append(c).append("%')");
+                }
+                criteria.add(Restrictions.sqlRestriction(pattern.toString().substring(5)));
+                paysList.remove(0);
             }
 
+            String langue = getFirstItem(langueList);
             if (langue != null && !langue.isEmpty()) {
-                criteria.add(Restrictions.ilike("langue", langue, MatchMode.ANYWHERE));
+                Conjunction conjunction = Restrictions.conjunction();
+                for (char c : langue.toCharArray()) {
+                    conjunction.add(Restrictions.ilike("langue", String.valueOf(c), MatchMode.ANYWHERE));
+                }
+                criteria.add(conjunction);
+                langueList.remove(0);
             }
 
+            String genre = getFirstItem(genreList);
             if (genre != null && !genre.isEmpty()) {
-                criteria.createAlias("genres", "g")
-                        .add(Restrictions.ilike("g.nomgenre", "%" + genre + "%"));
+                Conjunction conjunction = Restrictions.conjunction();
+                for (char c : genre.toCharArray()) {
+                    conjunction.add(Restrictions.ilike("g.nomgenre", String.valueOf(c), MatchMode.ANYWHERE));
+                }
+                criteria.createAlias("genres", "g").add(conjunction);
+                genreList.remove(0);
             }
 
+            String realisateur = getFirstItem(realisateurList);
             if (realisateur != null && !realisateur.isEmpty()) {
+                Conjunction conjunction = Restrictions.conjunction();
+                for (char c : realisateur.toCharArray()) {
+                    conjunction.add(Restrictions.ilike("p.nomcomplet", String.valueOf(c), MatchMode.ANYWHERE));
+                }
                 criteria.createAlias("realisateurs", "r")
                         .createAlias("r.personne", "p")
-                        .add(Restrictions.ilike("p.nomcomplet", "%" + realisateur + "%"));
+                        .add(conjunction);
+                realisateurList.remove(0);
             }
 
+            String acteur = getFirstItem(acteurList);
             if (acteur != null && !acteur.isEmpty()) {
-                criteria.createAlias("roles", "ro");
-                criteria.createAlias("ro.role.personne", "a");
-                criteria.add(Restrictions.ilike("a.personne.nomComplet", "%" + acteur + "%"));
+                Disjunction disjunction = Restrictions.disjunction();
+
+                for (String a : acteur.split(",")) {
+                    Conjunction conjunction = Restrictions.conjunction();
+                    for (char c : a.trim().toCharArray()) {
+                        conjunction.add(Restrictions.ilike("personneAlias.nomcomplet", String.valueOf(c), MatchMode.ANYWHERE));
+                    }
+                    disjunction.add(conjunction);
+                }
+
+                criteria.createAlias("roles", "rolesAlias")
+                        .createAlias("rolesAlias.acteur", "acteurAlias")
+                        .createAlias("acteurAlias.personne", "personneAlias")
+                        .add(disjunction);
+                acteurList.remove(0);
             }
 
             criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-            return criteria.list();
+            List<Film> filmsSearch = criteria.list();
+
+            return consultationFilmsRecursive(titreList, anneeMin, anneeMax, paysList, langueList, genreList, realisateurList, acteurList, filmsSearch);
         }
     }
 
