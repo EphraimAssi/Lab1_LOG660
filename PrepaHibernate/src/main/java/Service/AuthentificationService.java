@@ -33,7 +33,6 @@ public class AuthentificationService {
                 return utilisateur; // User found and password matches
             }
         } catch (Exception e) {
-            if (session != null) session.getTransaction().rollback();
             e.printStackTrace();
         } finally {
             if (session != null) session.close();
