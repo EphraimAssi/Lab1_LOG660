@@ -36,14 +36,16 @@ public class DataFacade {
         return (list != null && !list.isEmpty()) ? list.get(0) : null;
     }
 
-    public void connectionUtilisateur(String email, String password) {
+    public PersonneDossier connectionUtilisateur(String email, String password) {
         AuthentificationService authentificationService = new AuthentificationService(sessionFactory);
         PersonneDossier utilisateur = authentificationService.connectionUtilisateur(email, password);
         if (utilisateur != null) {
             System.out.println("Utilisateur trouvé : " + utilisateur.getNom() + " " + utilisateur.getPrenom());
         } else {
             System.out.println("Utilisateur non trouvé");
+            return null;
         }
+        return utilisateur;
     }
 
     public List<Film> consultationFilms(String titre, String anneeMin, String anneeMax, String pays, String langue, String genre, String realisateur, String acteur) {
@@ -238,23 +240,32 @@ public class DataFacade {
         loadRoles(film);
     }
 
-    public void locationFilmPersonneDossier() {
-        Client client = retourneClient();
+    public void locationFilmPersonneDossier(BigInteger idpersonne) {
+        Client client = retourneClient(idpersonne);
         Film film = retourneFilm();
         LocationFilmService locationFilm = new LocationFilmService(sessionFactory);
         locationFilm.locationFilmPersonneDossier(client, film);
     }
 
-    public Client retourneClient() {
-        Session session = sessionFactory.openSession();
-        BigInteger idclient = BigInteger.valueOf(2372494);
-        session.beginTransaction();
-        Query<Client> query = session.createQuery("select e from Client e where idpersonne = :idclient", Client.class);
-        query.setParameter("idclient", idclient);
-        Client client = query.uniqueResult();
-        session.getTransaction().commit();
-        session.close();
-        return client;
+    public Client retourneClient(BigInteger idpersonne) {
+        try(Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Query<Client> query = session.createQuery("select p from Client p where idpersonne = :idpersonne", Client.class);
+            query.setParameter("idpersonne", idpersonne);
+            Client client = query.uniqueResult();
+            session.getTransaction().commit();
+            if (client != null) {
+                session.close();
+                return client; // User found and password matches
+            } else {
+                System.out.println("Client not found");
+                session.close();
+                return null; // User not found or password does not match
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null; // L'utilisateur n'est pas encore un client ?
     }
 
     public Film retourneFilm() {

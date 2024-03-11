@@ -1,43 +1,41 @@
 package Service;
 
+import entity.Client;
 import entity.PersonneDossier;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+
+import java.math.BigInteger;
+
 public class AuthentificationService {
     private SessionFactory sessionFactory;
-    private Session session;
+
     public AuthentificationService(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
-        this.session = null;
     }
 
-    public void openSession() {
-        session = sessionFactory.openSession();
-    }
     public PersonneDossier connectionUtilisateur(String courriel, String password) {
-        openSession();
-        System.out.println("Courriel : " + courriel + " Mot de passe : " + password);
-        try {
 
+        System.out.println("Courriel : " + courriel + " Mot de passe : " + password);
+        try(Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             Query<PersonneDossier> query = session.createQuery("select p from PersonneDossier p where courriel = :courriel", PersonneDossier.class);
             query.setParameter("courriel", courriel);
             PersonneDossier utilisateur = query.uniqueResult();
-
             session.getTransaction().commit();
-
-            System.out.println("Utilisateur mot de passe :" +  utilisateur.getMotdepasse());
-
             if (utilisateur != null && utilisateur.getMotdepasse().equals(password)) {
+                session.close();
                 return utilisateur; // User found and password matches
+            } else {
+                return null; // User not found or password does not match
             }
+
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            if (session != null) session.close();
         }
         return null; // Utilisateur n'a pas été trouvé ou le mot de passe ne correspond pas.
     }
+
 
 }
