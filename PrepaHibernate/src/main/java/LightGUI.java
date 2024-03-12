@@ -34,6 +34,72 @@ public class LightGUI extends JFrame {
 
     private JButton searchButton;
 
+
+    private void createSearchPopup() {
+        JDialog searchDialog = new JDialog(this, "Search Films", true);
+        searchDialog.setSize(400, 300);
+        searchDialog.setLayout(new GridLayout(9, 2, 10, 10));
+
+        JTextField titreField = new JTextField();
+        JTextField anneeMinField = new JTextField();
+        JTextField anneeMaxField = new JTextField();
+        JTextField paysField = new JTextField();
+        JTextField langueField = new JTextField();
+        JTextField genreField = new JTextField();
+        JTextField realisateurField = new JTextField();
+        JTextField acteurField = new JTextField();
+
+        searchDialog.add(new JLabel("Titre:"));
+        searchDialog.add(titreField);
+
+        searchDialog.add(new JLabel("Année Min:"));
+        searchDialog.add(anneeMinField);
+
+        searchDialog.add(new JLabel("Année Max:"));
+        searchDialog.add(anneeMaxField);
+
+        searchDialog.add(new JLabel("Pays:"));
+        searchDialog.add(paysField);
+
+        searchDialog.add(new JLabel("Langue:"));
+        searchDialog.add(langueField);
+
+        searchDialog.add(new JLabel("Genre:"));
+        searchDialog.add(genreField);
+
+        searchDialog.add(new JLabel("Réalisateur:"));
+        searchDialog.add(realisateurField);
+
+        searchDialog.add(new JLabel("Acteur:"));
+        searchDialog.add(acteurField);
+
+        JButton searchButton = new JButton("Search");
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String titre = titreField.getText();
+                String anneeMin = anneeMinField.getText();
+                String anneeMax = anneeMaxField.getText();
+                String pays = paysField.getText();
+                String langue = langueField.getText();
+                String genre = genreField.getText();
+                String realisateur = realisateurField.getText();
+                String acteur = acteurField.getText();
+
+                List<Film> result = dataBroker.consultationFilms(titre, anneeMin, anneeMax, pays, langue, genre, realisateur, acteur);
+                searchDialog.dispose();
+
+                movieListModel.clear();
+                for ( Film film : result) {
+                    movieListModel.addElement(film.getTitre());
+                    titleToFilm.put(film.getTitre(), film);
+                }
+            }
+        });
+        searchDialog.getContentPane().add(searchButton);
+        searchDialog.setVisible(true);
+    }
+
     public LightGUI() {
         setTitle("Movie Rental App");
         setSize(600, 400);
@@ -168,11 +234,6 @@ public class LightGUI extends JFrame {
             }
         });
 
-
-
-        searchField = new JTextField(20);
-        searchPanel.add(searchField, BorderLayout.CENTER);
-
         // Creating the search button
         searchButton = new JButton("Search");
         searchPanel.add(searchButton , BorderLayout.EAST);
@@ -181,92 +242,11 @@ public class LightGUI extends JFrame {
 
 
         // Adding action listener to the search button
-        searchField.addKeyListener(new KeyAdapter() {
-            private int spaceCount = 0;
-            @Override
-            public void keyReleased(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                    spaceCount++; // Increment space count on space key release
-                    String currentText = searchField.getText();
-                    int textLength = currentText.length();
-                    System.out.println("Text:" + currentText);
-
-                    // Check if the last two characters are spaces (indicating two consecutive spaces)
-                    if (spaceCount >= 2 && textLength >= 2 && currentText.substring(textLength - 2).equals("  ")) {
-                        if (!currentText.contains("titre: ")) {
-                            searchField.setText("titre:" + currentText.trim());
-                        } else if (!currentText.contains("date:")) {
-                            // Remove the last two spaces before adding "releaseDate:"
-                            searchField.setText(currentText.trim() + "date:");
-                        }
-                        spaceCount = 0; // Reset space count
-                        System.out.println("spacecount: " + spaceCount);
-                    }
-                } else {
-                    spaceCount = 0; // Reset space count if any other key is released
-                }
-            }
-        });
-
         searchButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
-                String searchText = searchField.getText();
-                String[] parts = searchText.split(":", 2);
-                List<Film> films = titleToFilm.values().stream().collect(Collectors.toList());
-
-                if (!searchText.isEmpty()) {
-                    movieListModel.clear();
-                    filtreFilm.clear();
-                }
-                if (searchText.isEmpty()) {
-                    for ( Film film : titleToFilm.values()) {
-                        movieListModel.addElement(film.getTitre());
-                    }
-                }
-
-                if (parts.length == 2) {
-                    String attribute = parts[0];
-                    String value = parts[1];
-
-                    switch (attribute) {
-                        case "titre":
-                            for (Film film : films) {
-                                System.out.println(film.getTitre());
-                                System.out.println("value: titre :" + value);
-                                if (film.getTitre().toLowerCase().contains(value.toLowerCase())) {
-                                    System.out.println("Titre qui match : ");
-                                    movieListModel.addElement(film.getTitre());
-                                    filtreFilm.put(film.getTitre(), film);
-                                }
-                            }
-                            break;
-                        case "date":
-                            for (Film film : films) {
-                                System.out.println("Date :" + film.getAnnee());
-                                System.out.println("value: date :" + value);
-                                if (film.getAnnee().toString().contains(value)){
-                                    System.out.println("Date qui match : ");
-                                    movieListModel.addElement(film.getTitre());
-                                    filtreFilm.put(film.getTitre(), film);
-                                }
-                            }
-                            break;
-                        default:
-                            System.out.println("Unknown attribute");
-                    }
-                } else {
-                    System.out.println("Invalid search format. Use attribute:value.");
-                }
-
-                for (Film filmfiltre : filtreFilm.values()) {
-                    System.out.println("film apres filtre : " + filtreFilm.get(filmfiltre.getTitre()));
-                }
+                createSearchPopup();
             }
         });
-
-
-
 
         hibernateConfig = new HibernateConfig();
         sessionFactory = hibernateConfig.getSessionFactory();

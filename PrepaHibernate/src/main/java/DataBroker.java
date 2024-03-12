@@ -51,6 +51,15 @@ public class DataBroker {
     public List<Film> consultationFilms(String titre, String anneeMin, String anneeMax, String pays, String langue, String genre, String realisateur, String acteur) {
         List<Film> films = new ArrayList<>();
 
+        titre = checkEmptyString(titre);
+        anneeMin = checkEmptyString(anneeMin);
+        anneeMax = checkEmptyString(anneeMax);
+        pays = checkEmptyString(pays);
+        langue = checkEmptyString(langue);
+        genre = checkEmptyString(genre);
+        realisateur = checkEmptyString(realisateur);
+        acteur = checkEmptyString(acteur);
+
         ArrayList<String> titreList = splitToList(titre);
         ArrayList<String> paysList = splitToList(pays);
         ArrayList<String> langueList = splitToList(langue);
@@ -58,13 +67,17 @@ public class DataBroker {
         ArrayList<String> realisateurList = splitToList(realisateur);
         ArrayList<String> acteurList = splitToList(acteur);
 
-        films = consultationFilmsRecursive(titreList, anneeMin, anneeMax, paysList, langueList, genreList, realisateurList, acteurList, films);
+        films = consultationFilmsRecursive(titreList, anneeMin, anneeMax, paysList, langueList, genreList, realisateurList, acteurList, films, false);
 
         return films;
     }
 
-    public List<Film> consultationFilmsRecursive(List<String> titreList, String anneeMin, String anneeMax, List<String> paysList, List<String> langueList, List<String> genreList, List<String> realisateurList, List<String> acteurList, List<Film> films) {
-        if (titreList.isEmpty() && paysList.isEmpty() && langueList.isEmpty() && genreList.isEmpty() && realisateurList.isEmpty() && acteurList.isEmpty()) {
+    private String checkEmptyString(String str) {
+        return str.isEmpty() ? null : str;
+    }
+
+    public List<Film> consultationFilmsRecursive(List<String> titreList, String anneeMin, String anneeMax, List<String> paysList, List<String> langueList, List<String> genreList, List<String> realisateurList, List<String> acteurList, List<Film> films, boolean anneeChecked) {
+        if (titreList.isEmpty() && anneeChecked && paysList.isEmpty() && langueList.isEmpty() && genreList.isEmpty() && realisateurList.isEmpty() && acteurList.isEmpty()) {
             return films;
         }
 
@@ -117,6 +130,8 @@ public class DataBroker {
             if (anneeMax != "9999" && !anneeMax.isEmpty() && StringUtils.isNumeric(anneeMax)) {
                 criteria.add(Restrictions.le("annee", anneeMax));
             }
+
+            anneeChecked = true;
 
             String pays = getFirstItem(paysList);
             if (pays != null && !pays.isEmpty()) {
@@ -182,7 +197,7 @@ public class DataBroker {
             criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
             List<Film> filmsSearch = criteria.list();
 
-            return consultationFilmsRecursive(titreList, anneeMin, anneeMax, paysList, langueList, genreList, realisateurList, acteurList, filmsSearch);
+            return consultationFilmsRecursive(titreList, anneeMin, anneeMax, paysList, langueList, genreList, realisateurList, acteurList, filmsSearch, anneeChecked);
         }
     }
 
