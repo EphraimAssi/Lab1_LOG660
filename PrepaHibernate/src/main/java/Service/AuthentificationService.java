@@ -26,6 +26,7 @@ public class AuthentificationService {
             session.getTransaction().commit();
             if (utilisateur != null && utilisateur.getMotdepasse().equals(password)) {
                 session.close();
+
                 return utilisateur; // User found and password matches
             } else {
                 return null; // User not found or password does not match

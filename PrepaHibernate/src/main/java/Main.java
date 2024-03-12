@@ -94,9 +94,14 @@ public class Main {
 //           System.out.println("Utilisateur non trouvé");
 //       }
 
-        SwingUtilities.invokeLater(() -> {
-            LightGUI app = new LightGUI();
-            app.setVisible(true);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                LightGUI app = new LightGUI();
+                app.setVisible(true);
+            }
         });
+
+
     }
 }

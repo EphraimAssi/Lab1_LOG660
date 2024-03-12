@@ -9,6 +9,8 @@ import javax.persistence.criteria.*;
 import java.math.BigInteger;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 public class LocationFilmService {
 
     private SessionFactory sessionFactory;
@@ -62,6 +64,7 @@ public class LocationFilmService {
 
 
             if (nombreFilmDispoClient <= 0) {
+                JOptionPane.showMessageDialog(null, "Le client a atteint le nombre maximum de location");
                 System.out.println("Le client a atteint le nombre maximum de location");
                 return;
             }
@@ -94,6 +97,7 @@ public class LocationFilmService {
 //            }
 
             if (nombreExemplaireDispo == 0) {
+                JOptionPane.showMessageDialog(null, "Plus aucun d'exemplaire disponible");
                 System.out.println("Plus aucun d'exemplaire disponible");
                 return;
             }
@@ -122,10 +126,13 @@ public class LocationFilmService {
                 session.save(location);
                 session.getTransaction().commit();
                 System.out.println("Film loué avec succès");
+                JOptionPane.showMessageDialog(null, "Film loué avec succès");
             } else {
+                JOptionPane.showMessageDialog(null, "Aucun exemplaire trouvé");
                 System.out.println("Aucun exemplaire trouvé");
             }
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erreur lors de la location du film");
             System.out.println("Erreur lors de la location du film");
             if (session != null) session.getTransaction().rollback();
             e.printStackTrace();
