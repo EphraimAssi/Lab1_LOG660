@@ -17,10 +17,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class DataFacade {
+public class DataBroker {
     private final SessionFactory sessionFactory;
 
-    public DataFacade() {
+    public DataBroker() {
         HibernateConfig hibernateConfig = new HibernateConfig();
         this.sessionFactory = hibernateConfig.getSessionFactory();
     }

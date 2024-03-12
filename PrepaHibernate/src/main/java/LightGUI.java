@@ -23,7 +23,7 @@ public class LightGUI extends JFrame {
     private JButton rentButton;
     private HibernateConfig hibernateConfig;
     private SessionFactory sessionFactory;
-    private DataFacade dataFacade;
+    private DataBroker dataBroker;
     private PersonneDossier personneDossier;
     private Client client;
     private Map<String, Film> titleToFilm;
@@ -96,7 +96,7 @@ public class LightGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String username = usernameField.getText();
                 String password = passwordField.getText();
-                personneDossier = dataFacade.connectionUtilisateur(username, password);
+                personneDossier = dataBroker.connectionUtilisateur(username, password);
                 if (personneDossier != null) {
                     CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
                     cardLayout.show(getContentPane(), "MAIN");
@@ -104,7 +104,7 @@ public class LightGUI extends JFrame {
                 } else {
                     JOptionPane.showMessageDialog(LightGUI.this, "Invalid username or password");
                 }
-                client = dataFacade.retourneClient(personneDossier.getIdpersonne());
+                client = dataBroker.retourneClient(personneDossier.getIdpersonne());
                 if (client == null) {
                     JOptionPane.showMessageDialog(LightGUI.this, "You are not a client");
                 }
@@ -119,7 +119,7 @@ public class LightGUI extends JFrame {
                 if (selectedIndex != -1) {
                     String selectedMovie = movieListModel.getElementAt(selectedIndex);
                     Film film = titleToFilm.get(selectedMovie);
-                    dataFacade.loadAllFilm(film);
+                    dataBroker.loadAllFilm(film);
                     StringBuilder s = new StringBuilder();
                     s.append("Title: ");
                     s.append(selectedMovie);
@@ -137,7 +137,7 @@ public class LightGUI extends JFrame {
                     s.append(film.getBandesannonces());
                     s.append("\n");
                     s.append("Examplaires: ");
-                    dataFacade.loadExemplaireFilm(film);
+                    dataBroker.loadExemplaireFilm(film);
                     s.append(film.getExemplairesFilm().size());
                     movieDetailsArea.setText(s.toString());
 
@@ -152,7 +152,7 @@ public class LightGUI extends JFrame {
             if (selectedIndex != -1) {
                 String selectedMovie = movieListModel.getElementAt(selectedIndex);
                 Film film = titleToFilm.get(selectedMovie);
-                dataFacade.loadExemplaireFilm(film);
+                dataBroker.loadExemplaireFilm(film);
                 List<Exemplairefilm> examplaires = film.getExemplairesFilm();
 
                 if(examplaires.isEmpty())
@@ -270,7 +270,7 @@ public class LightGUI extends JFrame {
 
         hibernateConfig = new HibernateConfig();
         sessionFactory = hibernateConfig.getSessionFactory();
-        dataFacade = new DataFacade();
+        dataBroker = new DataBroker();
     }
 
     private void populateMovieList() {
@@ -281,7 +281,7 @@ public class LightGUI extends JFrame {
 //        }
         titleToFilm = new HashMap<>();
         filtreFilm = new HashMap<>();
-        List<Film> result = dataFacade.getAllFilms();
+        List<Film> result = dataBroker.getAllFilms();
         String[] movies = {};
         movieListModel.clear();
         for ( Film film : result) {
