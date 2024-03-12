@@ -280,4 +280,13 @@ public class DataFacade {
         session.close();
         return film;
     }
+
+    public List<Film> getAllFilms() {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        List<Film> result = session.createQuery("select e from Film e").list();
+        session.getTransaction().commit();
+        session.close();
+        return result;
+    }
 }

@@ -4,6 +4,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.swing.*;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -75,10 +76,6 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        HibernateConfig hibernateConfig = new HibernateConfig();
-
-        SessionFactory sessionFactory = hibernateConfig.getSessionFactory();
-
         //showFirst10ExemplaireFilms(sessionFactory);
         //showFirst10Films(sessionFactory);
         //showFirst10Clients(sessionFactory);
@@ -88,16 +85,18 @@ public class Main {
 
 
         // Test facade connection utilisateur
-       DataFacade dataFacade = new DataFacade();
-       PersonneDossier personneDossier = dataFacade.connectionUtilisateur("AaronAColquitt98@hotmail.com", "lim3Le7Ji");
-       if (personneDossier != null) {
-           BigInteger idpersonne = personneDossier.getIdpersonne();
-           dataFacade.locationFilmPersonneDossier(idpersonne);
-       } else {
-           System.out.println("Utilisateur non trouvé");
-       }
+//       DataFacade dataFacade = new DataFacade();
+//       PersonneDossier personneDossier = dataFacade.connectionUtilisateur("AaronAColquitt98@hotmail.com", "lim3Le7Ji");
+//       if (personneDossier != null) {
+//           BigInteger idpersonne = personneDossier.getIdpersonne();
+//           dataFacade.locationFilmPersonneDossier(idpersonne);
+//       } else {
+//           System.out.println("Utilisateur non trouvé");
+//       }
 
-
-
+        SwingUtilities.invokeLater(() -> {
+            LightGUI app = new LightGUI();
+            app.setVisible(true);
+        });
     }
 }
