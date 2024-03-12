@@ -19,6 +19,13 @@ public class LightGUI extends JFrame {
     private JButton connectButton;
     private JList<String> movieList;
     private DefaultListModel<String> movieListModel;
+
+    private JList<String> acteurList;
+    private DefaultListModel<String> acteurListModel;
+
+    private JList<String> realisateurList;
+    private DefaultListModel<String> realisateurListModel;
+
     private JTextArea movieDetailsArea;
     private JButton rentButton;
     private HibernateConfig hibernateConfig;
@@ -27,6 +34,7 @@ public class LightGUI extends JFrame {
     private PersonneDossier personneDossier;
     private Client client;
     private Map<String, Film> titleToFilm;
+    private Map<String, Role> titleToActeur;
 
     private Map<String, Film> filtreFilm;
 
@@ -131,6 +139,7 @@ public class LightGUI extends JFrame {
 
         JPanel mainPanel = new JPanel(new BorderLayout());
         JPanel moviePanel = new JPanel(new BorderLayout());
+        JPanel acteurPanel = new JPanel(new BorderLayout());
         JPanel detailsPanel = new JPanel(new BorderLayout());
 
         JPanel searchPanel = new JPanel(new BorderLayout());
@@ -138,9 +147,21 @@ public class LightGUI extends JFrame {
 
         movieListModel = new DefaultListModel<>();
         movieList = new JList<>(movieListModel);
+
+        acteurListModel = new DefaultListModel<>();
+        acteurList = new JList<>(acteurListModel);
+
+        realisateurListModel = new DefaultListModel<>();
+        realisateurList = new JList<>(realisateurListModel);
+
         JScrollPane movieScrollPane = new JScrollPane(movieList);
         moviePanel.add(new JLabel("Movies:"), BorderLayout.NORTH);
         moviePanel.add(movieScrollPane, BorderLayout.CENTER);
+
+        JScrollPane acteurScrollPane = new JScrollPane(acteurList);
+        acteurPanel.add(new JLabel("Acteur"), BorderLayout.NORTH);
+        acteurPanel.add(acteurScrollPane, BorderLayout.CENTER);
+
         movieDetailsArea = new JTextArea();
         movieDetailsArea.setEditable(false);
         JPanel rentPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -150,7 +171,9 @@ public class LightGUI extends JFrame {
         detailsPanel.add(rentPanel, BorderLayout.SOUTH);
         detailsPanel.add(new JLabel("Movie Details:"), BorderLayout.NORTH);
         detailsPanel.add(new JScrollPane(movieDetailsArea), BorderLayout.CENTER);
+        mainPanel.setLayout(new GridLayout(1, 3));
         mainPanel.add(moviePanel, BorderLayout.WEST);
+        mainPanel.add(acteurPanel, BorderLayout.EAST);
         mainPanel.add(detailsPanel, BorderLayout.CENTER);
 
         getContentPane().setLayout(new CardLayout());
@@ -203,12 +226,13 @@ public class LightGUI extends JFrame {
                     s.append(film.getBandesannonces());
                     s.append("\n");
                     s.append("Examplaires: ");
-                    dataBroker.loadExemplaireFilm(film);
                     s.append(film.getExemplairesFilm().size());
                     movieDetailsArea.setText(s.toString());
-
+                    populateActeurList(film);
                 }
             }
+
+
         });
 
         rentButton.addActionListener(e -> {
@@ -268,6 +292,15 @@ public class LightGUI extends JFrame {
 //            dataFacade.loadAllFilm(film);
             movieListModel.addElement(film.getTitre());
             titleToFilm.put(film.getTitre(), film);
+        }
+    }
+
+    private void populateActeurList(Film film) {
+        titleToActeur = new HashMap<>();
+        acteurListModel.clear();
+        for ( Role i : film.getRoles()) {
+            acteurListModel.addElement(i.getActeur().getPersonne().getNomcomplet());
+            titleToActeur.put(i.getActeur().getPersonne().getNomcomplet(), i);
         }
     }
 }
